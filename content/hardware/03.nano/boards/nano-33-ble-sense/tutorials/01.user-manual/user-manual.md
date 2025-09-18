@@ -136,7 +136,7 @@ The Nano 33 BLE Sense can be powered in several ways:
 
 - **Via USB Micro connector:** The most common method during development and programming
 
-- **Via VIN pin:** Using an external +4.5-18 VDC power supply that will be internally regulated to +3.3 VDC.
+- **Via VIN pin:** Using an external +5-18 VDC power supply that will be internally regulated to +3.3 VDC.
 
 - **Via 3V3 pin:** Directly connecting a regulated +3.3 VDC source.
 
@@ -824,68 +824,13 @@ void loop() {
 
 You should now see the built-in orange user LED of your Nano 33 BLE Sense board gradually fade in and out, creating a smooth breathing effect that repeats continuously.
 
-![Onboard RGB user LED fading](assets/pwm-1.gif)
+![Onboard RGB user LED fading]()
 
 Additionally, you can open the Arduino IDE's Serial Monitor (Tools > Serial Monitor) to see the status messages that the example sketch sends at key brightness levels.
 
-![Arduino IDE Serial Monitor output for the PWM example sketch](assets/pwm-2.png)
+![Arduino IDE Serial Monitor output for the PWM example sketch]()
 
-The following example demonstrates how to use a 12-bit PWM resolution for more precise control of the built-in orange user LED:
 
-```arduino
-/**
-High-Resolution PWM Example for the Arduino Nano 33 BLE Sense Board
-Name: nano_33_ble_sense_pwm_high_res.ino
-Purpose: This sketch demonstrates how to use 12-bit PWM resolution
-for precise control of the built-in orange user LED brightness.
-
-@author Arduino Product Experience Team
-@version 1.0 01/06/25
-*/
-
-// Built-in LED pin (supports PWM)
-const int pwmPin = LED_BUILTIN;
-
-void setup() {
-  // Initialize serial communication and wait up to 2.5 seconds for a connection
-  Serial.begin(115200);
-  for (auto startNow = millis() + 2500; !Serial && millis() < startNow; delay(500));
-  
-  // Set PWM resolution to 12-bit (0-4095)
-  analogWriteResolution(12);
-  
-  Serial.println("- Arduino Nano 33 BLE Sense - High-Resolution PWM Example started...");
-  Serial.println("- Using 12-bit resolution (0-4095) with built-in LED");
-}
-
-void loop() {
-  // Generate a smooth sine wave using 12-bit PWM
-  for (int i = 0; i < 360; i++) {
-    // Calculate sine wave value and map to 12-bit range
-    float sineValue = sin(i * PI / 180.0);
-    int pwmValue = (int)((sineValue + 1.0) * 2047.5);  // Map -1 to 1 → 0 to 4095
-    
-    analogWrite(pwmPin, pwmValue);
-    
-    // Print current values every 30 degrees
-    if (i % 30 == 0) {
-      Serial.print("- Angle: ");
-      Serial.print(i);
-      Serial.print("°, PWM Value: ");
-      Serial.println(pwmValue);
-    }
-    
-    delay(10);
-  }
-  
-  Serial.println("- Sine wave cycle completed");
-  delay(1000);
-}
-```
-
-This high-resolution example creates a smooth sine wave pattern with the built-in LED brightness, demonstrating the precision available with a 12-bit PWM resolution. You should see a very smooth transition in the LED brightness following a sine wave pattern. Additionally, you can open the Arduino IDE's Serial Monitor (Tools > Serial Monitor) to see the angle and PWM value outputs that demonstrate the precise 12-bit control values being used.
-
-![Arduino IDE Serial Monitor output for the high-resolution PWM example sketch]()
 
 ### 5V
 
@@ -1517,6 +1462,730 @@ If you tilt the board upwards, downwards, right or left, you will see the result
 Here is a screenshot of the sketch returning these values:
 
 ![Printing out the "tilt condition" of the board.](./assets/nano33BS_02_printing_values.png)
+
+
+### Gyroscope
+
+A gyroscope sensor is a device that can measure and maintain the orientation and angular velocity of an object. Gyroscopes are more advanced than accelerometers, as they can measure the tilt and lateral orientation of an object, whereas an accelerometer can only measure its linear motion.
+
+The gyroscope data can be accessed through the following commands:
+
+```arduino
+  float x, y, z;
+
+  if (IMU.gyroscopeAvailable()) {
+    IMU.readGyroscope(x, y, z);
+  }
+```
+
+Gyroscope sensors are also called "Angular Rate Sensors" or "Angular Velocity Sensors". Measured in degrees per second, angular velocity is the change in the rotational angle of the object per unit of time.
+
+Here is an example of using the gyroscope as an indicator for the direction of the force that is applied to the board. This will be achieved by swiftly moving the board for an instant in four directions: forward, backward, to the left and to the right. The results will be visible through the Serial Monitor.
+
+```arduino
+/*
+  Arduino LSM9DS1 - Gyroscope Application
+
+  This example reads the gyroscope values from the LSM9DS1 sensor 
+  and prints them to the Serial Monitor or Serial Plotter, as a directional detection of 
+  an axis' angular velocity.
+
+  The circuit:
+  - Arduino Nano 33 BLE Sense
+
+  Created by Riccardo Rizzo
+
+  Modified by Benjamin Dannegård
+  30 Nov 2020
+
+  This example code is in the public domain.
+*/
+
+#include <Arduino_LSM9DS1.h>
+
+float x, y, z;
+int plusThreshold = 30, minusThreshold = -30;
+
+void setup() {
+  Serial.begin(9600);
+  while (!Serial);
+  Serial.println("Started");
+
+  if (!IMU.begin()) {
+    Serial.println("Failed to initialize IMU!");
+    while (1);
+  }
+  Serial.print("Gyroscope sample rate = ");
+  Serial.print(IMU.gyroscopeSampleRate());
+  Serial.println(" Hz");
+  Serial.println();
+  Serial.println("Gyroscope in degrees/second");
+}
+void loop() {
+  
+  if (IMU.gyroscopeAvailable()) {
+    IMU.readGyroscope(x, y, z);
+  }
+  if(y > plusThreshold)
+  {
+    Serial.println("Collision front");
+    delay(500);
+  }
+  if(y < minusThreshold)
+  {
+    Serial.println("Collision back");
+    delay(500);
+  }
+  if(x < minusThreshold)
+  {
+    Serial.println("Collision right");
+    delay(500);
+  }
+    if(x > plusThreshold)
+  {
+    Serial.println("Collision left");
+    delay(500);
+  }
+  
+}
+```
+In order to get a correct reading of the board data, before uploading the sketch to the board hold the board in your hand, from the side of the USB port. The board should be facing up and "pointing" away from you. The image below illustrates the board's position and how it works:
+
+![Positioning of the board.](./assets/nano33BS_03_illustration.png)
+
+Next, you can verify and upload the sketch to the board and open the Monitor from the menu on the left.  
+
+Now with the board parallel to the ground you can swiftly move it towards one direction: forward, backwards, right or left. According to the movement of your choice, the results will print every second to your monitor!
+
+
+Here is a screenshot of the sketch returning these values:
+
+![Serial Monitor output.](./assets/nano33BS_03_printing_values.png)
+
+### Magnetometer
+
+A magnetometer is a device that measures magnetism, that is the direction, strength, or relative change of a magnetic field at a particular location.
+
+![How a magnetometer works.](./assets/nano33BS_04_magnetometer.png)
+
+
+The magnetometer data can be accessed through the following commands:
+
+```arduino
+  float x, y, z;
+
+  IMU.readMagneticField(x, y, z);
+```
+
+Here is an example for reading the values X, Y and Z and provide visual feedback through the in-built LED according to the intensity of magnetism around an electric object's cord.
+
+```arduino
+/*
+  Arduino LSM9DS1 - Magnetometer
+
+  This example reads the magnetometer's values from the LSM9DS1 sensor 
+  and `analogWrite` the built-in LED according to the intensity of
+  the magnetic field surrounding electrical devices.
+
+  The circuit:
+  - Arduino Nano 33 BLE Sense
+
+  Created by Benjamin Dannegård
+  4 Dec 2020
+
+  This example code is in the public domain.
+*/
+
+
+#include <Arduino_LSM9DS1.h>
+float x,y,z, ledvalue;
+
+void setup() {
+  IMU.begin();
+}
+
+void loop() {
+  
+  // read magnetic field in all three directions
+  IMU.readMagneticField(x, y, z);
+  
+  if(x < 0)
+  {
+    ledvalue = -(x);
+  }
+  else{
+    ledvalue = x;
+  }
+  
+  analogWrite(LED_BUILTIN, ledvalue);
+  delay(500);
+}
+```
+
+After you have successfully verified and uploaded the sketch to the board, it's time to put it to the test. You can choose an electric appliance at home or any object that runs with electrical current. For example, in this tutorial we will use a laptop charger to test it out. 
+
+Place your board on top of the laptop's charging cord for 5-10 seconds and then move it away from it for some seconds again. While the board is close to the cord you should notice the (orange) built-in LED blinking. The intensity of the LED will vary according to the magnetic field detected.
+
+Here is a screenshot illustrating the board's position:
+
+![Checking for magnetic disturbance.](./assets/nano33BS_04_illustration.png)
+
+### APDS9960
+
+The APDS9960 chip allows for measuring digital proximity and ambient light as well as for detecting RGB colors and gestures.
+
+![The APDS-9960 proximity and gesture sensor](assets/Nano33_ble_sense_gesture.png)
+
+The sensor's gesture detection utilizes four directional photodiodes to sense reflected infrared (IR) energy, sourced by the integrated LED, to convert physical motion information (i.e. velocity, direction and distance) into digital information.
+
+It features:
+
+- Four separate diodes sensitive to different directions.
+- Ambient light rejection.
+- Offset compensation.
+- Programmable driver for IR LED current.
+- 32 dataset storage FIFO.
+- Interrupt driven I2C-bus communication.
+
+To access the data from the APDS9960 module, we need to install the [APDS9960](https://github.com/arduino-libraries/Arduino_APDS9960) library, which comes with examples that can be used directly with the Nano 33 BLE Sense.
+
+It can be installed directly from the library manager through the IDE of your choice. To use it, we need to include it at the top of the sketch:
+
+```arduino
+#include <Arduino_APDS9960.h>
+```
+
+And to initialize the library, we can use the following command inside `void setup()`.
+
+```arduino
+if (!APDS.begin()) {
+  Serial.println("Error initializing APDS9960 sensor!");
+}
+```
+
+Then we check if there is data available from the proximity sensor. If there is we can print the value in the serial monitor. The value can range between 0-255, where 0 is close and 255 is far away. If it prints the value -1, it indicates an error.
+
+```arduino
+if (APDS.proximityAvailable()) {
+  Serial.println(APDS.readProximity());
+}
+```
+
+### Proximity Detection
+
+Here is an example for printing out simple proximity detections and control the board's RGB LED accordingly. In addition to programming the board to change the colors of the RGB LED according to the proximity of an object to the board.
+
+```arduino
+#include <Arduino_APDS9960.h>
+
+int ledState = LOW;
+
+unsigned long previousMillis = 0;
+
+const long intervalLong = 1000;
+const long intervalMed = 500;
+const long intervalShort = 100;
+
+void setup() {
+  Serial.begin(9600);
+  while (!Serial);
+
+  if (!APDS.begin()) {
+    Serial.println("Error initializing APDS9960 sensor!");
+  }
+
+  // set the LEDs pins as outputs
+  pinMode(LEDR, OUTPUT);
+  pinMode(LEDG, OUTPUT);
+  pinMode(LEDB, OUTPUT);
+
+  // turn all the LEDs off
+  digitalWrite(LEDR, HIGH);
+  digitalWrite(LEDG, HIGH);
+  digitalWrite(LEDB, HIGH);
+}
+
+void loop() {
+  unsigned long currentMillis = millis();
+
+  // check if a proximity reading is available
+  if (APDS.proximityAvailable()) {
+    // read the proximity
+    // - 0   => close
+    // - 255 => far
+    // - -1  => error
+    int proximity = APDS.readProximity();
+
+    if (proximity > 150) {
+      if (currentMillis - previousMillis >= intervalLong) {
+        previousMillis = currentMillis;
+
+        // if the LED is off turn it on and vice-versa:
+        if (ledState == LOW) {
+          ledState = HIGH;
+        } else {
+          ledState = LOW;
+        }
+
+        // set the green LED with the ledState of the variable and turn off the rest
+        digitalWrite(LEDG, ledState);
+        digitalWrite(LEDR, HIGH);
+        digitalWrite(LEDB, HIGH);
+      }
+    }
+
+    else if(proximity > 50 && proximity <= 150){
+      if (currentMillis - previousMillis >= intervalMed) {
+        previousMillis = currentMillis;
+
+        // if the LED is off turn it on and vice-versa:
+        if (ledState == LOW) {
+          ledState = HIGH;
+        } else {
+          ledState = LOW;
+        }
+
+        // set the blue LED with the ledState of the variable and turn off the rest
+        digitalWrite(LEDB, ledState);
+        digitalWrite(LEDR, HIGH);
+        digitalWrite(LEDG, HIGH);
+      }
+    }
+
+    else {
+      if (currentMillis - previousMillis >= intervalShort) {
+        previousMillis = currentMillis;
+
+        // if the LED is off turn it on and vice-versa:
+        if (ledState == LOW) {
+          ledState = HIGH;
+        } else {
+          ledState = LOW;
+        }
+
+        // set the blue LED with the ledState of the variable and turn off the rest
+        digitalWrite(LEDR, ledState);
+        digitalWrite(LEDB, HIGH);
+        digitalWrite(LEDG, HIGH);
+      }
+    }
+
+    // print value to the Serial Monitor
+    Serial.println(proximity);
+  }
+}
+```
+
+After you have successfully verified and uploaded the sketch to the board, open the Serial Monitor from the menu on the left.
+
+In order to test out the code, you could begin by stabilizing your board on a standing position in front of you (USB port facing down) and moving an object up and down close to the board. You will see the values on the Serial Monitor changing and changing the color of the RGB LED and the blinking time.
+
+![LED blinking according to object's distance.](assets/nano33BS_11_illustration.png)
+
+
+Here is a screenshot example of the sketch returning values through the Serial Monitor.
+
+![Sensor data printed in the Serial Monitor.](assets/nano33BS_11_printing_values.png)
+
+### Gesture Recognition
+
+Here is an example for printing out simple hand gesture directions and control the board's RGB LED accordingly. In addition to programming the board to blink the built-in LED and change colors to the RGB LED according to the direction of the set gestures. The code will read simple Up-Down-Right-Left hand motions.
+
+```arduino
+/*
+  APDS9960 - Gesture Sensor
+  This example reads gesture data from the on-board APDS9960 sensor of the
+  Nano 33 BLE Sense and prints any detected gestures to the Serial Monitor.
+  Gesture directions are as follows:
+  - UP:    from USB connector towards antenna
+  - DOWN:  from antenna towards USB connector
+  - LEFT:  from analog pins side towards digital pins side
+  - RIGHT: from digital pins side towards analog pins side
+  The circuit:
+  - Arduino Nano 33 BLE Sense
+  This example code is in the public domain.
+*/
+
+#include <Arduino_APDS9960.h>
+
+void setup() {
+  Serial.begin(9600);
+  //in-built LED
+  pinMode(LED_BUILTIN, OUTPUT);
+  //Red
+  pinMode(LEDR, OUTPUT);
+  //Green
+  pinMode(LEDG, OUTPUT);
+  //Blue
+  pinMode(LEDB, OUTPUT);
+  
+  while (!Serial);
+  if (!APDS.begin()) {
+    Serial.println("Error initializing APDS9960 sensor!");
+  }
+  // for setGestureSensitivity(..) a value between 1 and 100 is required.
+  // Higher values makes the gesture recognition more sensible but less accurate
+  // (a wrong gesture may be detected). Lower values makes the gesture recognition
+  // more accurate but less sensible (some gestures may be missed).
+  // Default is 80
+  //APDS.setGestureSensitivity(80);
+  Serial.println("Detecting gestures ...");
+  // Turining OFF the RGB LEDs
+  digitalWrite(LEDR, HIGH);
+  digitalWrite(LEDG, HIGH);
+  digitalWrite(LEDB, HIGH);
+}
+void loop() {
+  if (APDS.gestureAvailable()) {
+    // a gesture was detected, read and print to serial monitor
+    int gesture = APDS.readGesture();
+    switch (gesture) {
+      case GESTURE_UP:
+        Serial.println("Detected UP gesture");
+        digitalWrite(LEDR, LOW);
+        delay(1000);
+        digitalWrite(LEDR, HIGH);
+        break;
+      case GESTURE_DOWN:
+        Serial.println("Detected DOWN gesture");
+        digitalWrite(LEDG, LOW);
+        delay(1000);
+        digitalWrite(LEDG, HIGH);
+        break;
+      case GESTURE_LEFT:
+        Serial.println("Detected LEFT gesture");
+        digitalWrite(LEDB, LOW);
+        delay(1000);
+        digitalWrite(LEDB, HIGH);
+        break;
+      case GESTURE_RIGHT:
+        Serial.println("Detected RIGHT gesture");
+        digitalWrite(LED_BUILTIN, HIGH);
+        delay(1000);
+        digitalWrite(LED_BUILTIN, LOW);
+        break;
+      default:
+        break;
+    }
+  }
+}
+```
+
+In order to test out the code, you could begin by stabilizing your board on a standing position in front of you (USB port facing down) and carry on by making directional UP-DOWN-RIGHT-LEFT hand gestures. Try to make your movement as clear as possible, yet subtle enough for the sensor to pick it up. 
+
+![Direction of hand gestures.](assets/nano33BS_07_testing.png)
+
+
+Here is a screenshot example of the sketch returning values.
+
+![Gesture detections printed in the Serial Monitor.](assets/nano33BS_07_printing_values.png) 
+
+## HTS221 Sensor
+
+The HTS221 is an ultra-compact sensor for relative humidity and temperature. We will use the I2C protocol to communicate with the sensor and get data from it. The sensor's range of different values are the following:
+
+- Humidity accuracy: ± 3.5% rH, 20 to +80% rH
+- Humidity range: 0 to 100 %
+- Temperature accuracy: ± 0.5 °C,15 to +40 °C
+- Temperature range: -40 to 120°C
+
+To access the data from the HTS221 module, we need to install the [HTS221](https://github.com/arduino-libraries/Arduino_HTS221) library, which comes with examples that can be used directly with the Nano 33 BLE Sense.
+
+It can be installed directly from the library manager through the IDE of your choice. To use it, we need to include it at the top of the sketch:
+
+```arduino
+#include <Arduino_HTS221.h>
+```
+
+And to initialize the library, we can use the following command inside `void setup()`.
+
+```arduino
+if (!HTS.begin()) {
+  Serial.println("Failed to initialize humidity temperature sensor!");
+}
+```
+
+Then we can print our values in the serial monitor to check the temperature and humidity values.
+
+```arduino
+Serial.println(HTS.readTemperature());
+Serial.println(HTS.readHumidity());
+```
+
+### Reading Temperature & Humidity
+
+Here is an example for measuring and printing out the humidity and temperature values of your surroundings. 
+
+```arduino
+/*
+  HTS221 - Read Sensors
+
+  This example reads data from the on-board HTS221 sensor of the
+  Nano 33 BLE Sense and prints the temperature and humidity sensor
+  values to the Serial Monitor once a second.
+
+  The circuit:
+  - Arduino Nano 33 BLE Sense
+
+  This example code is in the public domain.
+*/
+
+#include <Arduino_HTS221.h>
+
+float old_temp = 0;
+float old_hum = 0;
+
+void setup() {
+  Serial.begin(9600);
+  while (!Serial);
+
+  if (!HTS.begin()) {
+    Serial.println("Failed to initialize humidity temperature sensor!");
+    while (1);
+  }
+}
+
+void loop() {
+  // read all the sensor values
+  float temperature = HTS.readTemperature();
+  float humidity    = HTS.readHumidity();
+
+  // check if the range values in temperature are bigger than 0,5 ºC
+  // and if the range values in humidity are bigger than 1%
+  if (abs(old_temp - temperature) >= 0.5 || abs(old_hum - humidity) >= 1 )
+  {
+    old_temp = temperature;
+    old_hum = humidity;
+    // print each of the sensor values
+    Serial.print("Temperature = ");
+    Serial.print(temperature);
+    Serial.println(" °C");
+    Serial.print("Humidity    = ");
+    Serial.print(humidity);
+    Serial.println(" %");
+    Serial.println();
+  }
+
+  // print each of the sensor values
+  Serial.print("Temperature = ");
+  Serial.print(temperature);
+  Serial.println(" °C");
+
+  Serial.print("Humidity    = ");
+  Serial.print(humidity);
+  Serial.println(" %");
+
+  // print an empty line
+  Serial.println();
+
+  // wait 1 second to print again
+  delay(1000);
+}
+```
+After you have successfully verified and uploaded the sketch to the board, open the Serial Monitor from the menu on the left. You will now see the new values printed. If you want to test out whether it is working, you could slightly breathe (exhale) on your board and watch new values when the humidity, as well as the temperature, levels rise or decrease. 
+
+The following image shows how the data should be displayed.
+
+![Temperature & humidity printed in the Serial Monitor.](assets/nano33BS_01_printing_values.png)
+
+## LPS22HB Sensor
+
+The **LPS22HB** picks up on barometric pressure and allows for a 24-bit pressure data output between 260 to 1260 hPa. This data can also be processed to calculate the height above sea level of the current location.
+
+![The LPS22HB pressure sensor](assets/Nano33_ble_sense_pressure.png)
+
+The sensing element, which detects absolute pressure, consists of a suspended silicon membrane and it operates over a temperature range extending from -40 °C to +85 °C. 
+
+To access the data from the LPS22HB module, we need to install the [LPS22HB](https://github.com/arduino-libraries/Arduino_LPS22HB) library, which comes with examples that can be used directly with the Nano 33 BLE Sense.
+
+It can be installed directly from the library manager through the IDE of your choice. To use it, we need to include it at the top of the sketch:
+
+```arduino
+#include <Arduino_LPS22HB.h>
+```
+
+And to initialize the library, we can use the following command inside `void setup()`.
+
+```arduino
+if (!BARO.begin()) {
+  Serial.println("Failed to initialize pressure sensor!");
+}
+```
+
+Then we can read the values from the sensor using the code below.
+
+```arduino
+BARO.readPressure();
+```
+### Access Barometric Presure Sensor Data
+
+Here is an example for calculating the approximate altitude above sea level through the measurement of the atmospheric pressure.
+
+```arduino
+/*
+  LPS22HB - Read Pressure
+
+  This example reads data from the on-board LPS22HB sensor of the Nano 33 BLE Sense, 
+  converts the atmospheric pressure sensor values to altitude above sea level,
+  and prints them to the Serial Monitor every second.
+
+  The circuit:
+  - Arduino Nano 33 BLE Sense
+
+  This example code is in the public domain.
+*/
+
+#include <Arduino_LPS22HB.h>
+
+
+void setup() {
+  Serial.begin(9600);
+  while (!Serial);
+
+  if (!BARO.begin()) {
+    Serial.println("Failed to initialize pressure sensor!");
+    while (1);
+  }
+}
+
+void loop() {
+  // read the sensor value
+  float pressure = BARO.readPressure();
+  
+ 
+  float altitude = 44330 * ( 1 - pow(pressure/101.325, 1/5.255) );
+  
+
+  // print the sensor value
+  Serial.print("Altitude according to kPa is = ");
+  Serial.print(altitude);
+  Serial.println(" m");
+
+  // print an empty line
+  Serial.println();
+
+  // wait 1 second to print again
+  delay(1000);
+}
+```
+
+After verififying and uploading the sketch to the board, open the Serial Monitor from the menu on the left. In order to test out the code, you could begin by stabilizing your board on a fixed position and observe the values returned through the Serial Monitor. Here is a screenshot example of the sketch returning values.
+
+![Pressure data printed in the Serial Monitor.](assets/nano33BS_05_printing_values.png) 
+
+## Microphone
+
+The **MP34DT05** is a compact, low-power omnidirectional digital MEMS microphone with an IC interface. The MP34DT05 sensor is a ultra-compact microphone that use PDM (Pulse-Density Modulation) to represent an analog signal with a binary signal. The sensor's range of different values are the following:
+
+- Signal-to-noise ratio: 64dB
+- Sensitivity: -26dBFS ±3dB
+- Temperature range: -40 to 85°C
+
+![The MP34DT05 microphone](assets/Nano33_ble_sense_microphone.png) 
+
+To access the data from the MP34DT05, we need to use the [PDM](https://www.arduino.cc/en/Reference/PDM) library that is included in the **Arduino Mbed OS Nano Boards Package**. If the Board Package is installed, you will find an example that works by browsing **File > Examples > PDM > PDMSerialPlotter**. 
+
+***Please note: The sampling frequency in the PDMSerialPlotter example is set to 16000 Hz. If the microphone appears to not be working (monitor is printing a value of -128), try to change this rate to 20000 Hz. You can change this at the top of the PDMSerialPlotter example sketch.***
+
+```arduino
+static const int frequency = 20000; //frequency at 20 KHz instead of 16 KHz
+```
+### Controlling the On-Board RGB LED with Microphone
+
+Here is an example for measuring and displaying the sound values of your surroundings.
+
+```arduino
+/*
+  This example reads audio data from the on-board PDM microphones, and prints
+  out the samples to the Serial console. The Serial Plotter built into the
+  Arduino IDE can be used to plot the audio data (Tools -> Serial Plotter)
+
+  Circuit:
+  - Arduino Nano 33 BLE Sense board
+
+  This example code is in the public domain.
+*/
+
+#include <PDM.h>
+
+// buffer to read samples into, each sample is 16-bits
+short sampleBuffer[256];
+
+// number of samples read
+volatile int samplesRead;
+
+void setup() {
+  Serial.begin(9600);
+  while (!Serial);
+
+  // configure the data receive callback
+  PDM.onReceive(onPDMdata);
+
+  // optionally set the gain, defaults to 20
+  // PDM.setGain(30);
+
+  // initialize PDM with:
+  // - one channel (mono mode)
+  // - a 16 kHz sample rate
+  if (!PDM.begin(1, 16000)) {
+    Serial.println("Failed to start PDM!");
+    while (1);
+  }
+}
+
+void loop() {
+  // wait for samples to be read
+  if (samplesRead) {
+
+    // print samples to the serial monitor or plotter
+    for (int i = 0; i < samplesRead; i++) {
+      Serial.println(sampleBuffer[i]);
+      // check if the sound value is higher than 500
+      if (sampleBuffer[i]>=500){
+        digitalWrite(LEDR,LOW);
+        digitalWrite(LEDG,HIGH);
+        digitalWrite(LEDB,HIGH);
+      }
+      // check if the sound value is higher than 250 and lower than 500
+      if (sampleBuffer[i]>=250 && sampleBuffer[i] < 500){
+        digitalWrite(LEDB,LOW);
+        digitalWrite(LEDR,HIGH);
+        digitalWrite(LEDG,HIGH);
+      }
+      //check if the sound value is higher than 0 and lower than 250
+      if (sampleBuffer[i]>=0 && sampleBuffer[i] < 250){
+        digitalWrite(LEDG,LOW);
+        digitalWrite(LEDR,HIGH);
+        digitalWrite(LEDB,HIGH);
+      }
+    }
+
+    // clear the read count
+    samplesRead = 0;
+  }
+}
+
+void onPDMdata() {
+  // query the number of bytes available
+  int bytesAvailable = PDM.available();
+
+  // read into the sample buffer
+  PDM.read(sampleBuffer, bytesAvailable);
+
+  // 16-bit, 2 bytes per sample
+  samplesRead = bytesAvailable / 2;
+}
+```
+
+After you have successfully verified and uploaded the sketch to the board, open the Serial Monitor from the menu on the left. You will now see the new values printed.
+
+![Microphone data in the Serial Monitor.](assets/nano33BS_08_printing_values.png)
+
+If you want to test it, the only thing you need to do is to place the board next to a speaker and play some music to see how the colors of the RGB LED change based on the music.
+
+![RGB LED blinking according to the music.](assets/nano33BS_08_testing.png)
+
+**Warning:** Remember that depending of the music, lights might blink too fast. **Immediately stop playing and consult a doctor if you experience any symptoms of “photosensitive epileptic seizures”.**
 
 
 ## Support
