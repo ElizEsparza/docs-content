@@ -32,9 +32,8 @@ This user manual provides a comprehensive overview of the Nano 33 BLE Sense boar
 
 ### Software Requirements
 
-- [Arduino IDE 2.0+](https://www.arduino.cc/en/software/) or [Arduino Web Editor](https://create.arduino.cc/editor)
+- [Arduino IDE 2.0+](https://www.arduino.cc/en/software/), [OpenMV IDE](https://docs.arduino.cc/tutorials/nano-33-ble-sense/cheat-sheet/#imu) or [Arduino Web Editor](https://create.arduino.cc/editor)
 - [Arduino Mbed OS Nano Board Package](https://github.com/arduino/ArduinoCore-mbed).
-
 
 
 ## Nano 33 BLE Sense Overview
@@ -277,75 +276,85 @@ The built-in RGB LED can be accessed through the following macro definitions:
 |     Blue LED     |        `LEDB`        |         `P0.06`         |
 
 
-The following example sketch each of the RGB LED colors at an interval of 500 ms:
+The following example uses the predefined pin number constants (LEDR, LEDG, LEDB) and the digitalWrite function to create all possible combinations when setting each pin to a HIGH or LOW state.:
 
 ```arduino
-/**
-RGB LED Example for the Arduino Nano 33 BLE Sense Board
-Name: nano_33_rgb_led.ino
-Purpose: This sketch demonstrates how to control the built-in
-RGB LED of the Arduino Nano 33 BLE Sense board.
-
-@author Arduino Product Experience Team
-@version 1.0 01/06/25
-*/
-
 void setup() {
-  // Initialize serial communication and wait up to 2.5 seconds for a connection
-  Serial.begin(115200);
-  for (auto startNow = millis() + 2500; !Serial && millis() < startNow; delay(500));
-  
-  // Initialize LEDR, LEDG and LEDB as outputs
+
+  // Initialize pins as outputs
   pinMode(LEDR, OUTPUT);
   pinMode(LEDG, OUTPUT);
   pinMode(LEDB, OUTPUT);
-  
-  // Turn off all LEDs initially
-  digitalWrite(LEDR, HIGH);
-  digitalWrite(LEDG, HIGH);
-  digitalWrite(LEDB, HIGH);
-  
-  Serial.println("- Arduino Nano 33 BLE Sense - RGB LED Example started...");
 }
 
 void loop() {
-  // Turn on the built-in red LED and turn off the rest
+
+  // WHITE
+  digitalWrite(LEDR, LOW);
+  digitalWrite(LEDG, LOW);
+  digitalWrite(LEDB, LOW);
+
+  // RED
   digitalWrite(LEDR, LOW);
   digitalWrite(LEDG, HIGH);
   digitalWrite(LEDB, HIGH);
-  Serial.println("- Red LED on!");
-  delay(500);
-  
-  // Turn on the built-in green LED and turn off the rest
+
+  // wait for a second
+  delay(1000);
+
+  // GREEN
   digitalWrite(LEDR, HIGH);
   digitalWrite(LEDG, LOW);
   digitalWrite(LEDB, HIGH);
-  Serial.println("- Green LED on!");
-  delay(500);
-  
-  // Turn on the built-in blue LED and turn off the rest
+
+  // wait for a second
+  delay(1000);
+
+  // BLUE
   digitalWrite(LEDR, HIGH);
   digitalWrite(LEDG, HIGH);
   digitalWrite(LEDB, LOW);
-  Serial.println("- Blue LED on!");
-  delay(500);
-  
-  // Turn off all LEDs
+
+  // wait for a second
+  delay(1000);
+
+  // YELLOW
+  digitalWrite(LEDR, LOW);
+  digitalWrite(LEDG, LOW);
+  digitalWrite(LEDB, HIGH);
+
+  // wait for a second
+  delay(1000);
+
+  // MAGENTA
+  digitalWrite(LEDR, LOW);
+  digitalWrite(LEDG, HIGH);
+  digitalWrite(LEDB, LOW);
+
+  // wait for a second
+  delay(1000);
+
+  // CYAN
+  digitalWrite(LEDR, HIGH);
+  digitalWrite(LEDG, LOW);
+  digitalWrite(LEDB, LOW);
+
+  // wait for a second
+  delay(1000);
+
+  // RGB OFF
   digitalWrite(LEDR, HIGH);
   digitalWrite(LEDG, HIGH);
   digitalWrite(LEDB, HIGH);
-  Serial.println("- All LEDs off!");
-  delay(500);
+
+  // wait for a second
+  delay(1000);
 }
 ```
 
-You should now see the built-in RGB LED cycling through red, green, and blue colors, followed by a brief moment with all LEDs off, repeating this pattern continuously.
+You should now see the built-in RGB LED cycling through white, red, green, blue, yellow, magenta, and cyan colors followed by a brief moment with all LEDs off, repeating this pattern continuously.
 
 ![Onboard RGB user LED blinking]()
-
-Additionally, you can open the Arduino IDE's Serial Monitor (Tools > Serial Monitor) to see the status messages that the example sketch sends each time the RGB LEDs state changes.
-
-![Arduino IDE Serial Monitor output for the RGB LED example sketch]()
 
 ### User LED
 
@@ -417,7 +426,7 @@ This user manual section provides comprehensive information about the Nano 33 BL
 
 The Nano 33 BLE Sense features a total of **20 accessible pins** arranged in the classic Nano form factor, maintaining compatibility with existing Nano shields and breadboard layouts. These pins provide various functionalities including digital I/O, analog input, PWM output and several communication protocols.
 
-![Nano 33 BLE Sense pinout overview]()
+![Nano 33 BLE Sense pinout overview](assets/pinout.png)
 
 ### Pins Specifications and Characteristics
 
@@ -515,81 +524,75 @@ The available pin modes are `OUTPUT` for digital output, `INPUT` for digital inp
 
 ***The following example demonstrate basic digital pin functionality using simple connections that you can easily test with the Nano 33 BLE Sense board.*** 
 
-The following example demonstrates using both digital input and output simultaneously by reading a button and controlling the built-in LED of the board:
+The following example demonstrates turning on and off using the on-board LED:
 
 ```arduino
-/**
-Combined Digital I/O Example for the Arduino Nano 33 BLE Sense Board
-Name: nano_r4_digital_io_combined.ino
-Purpose: This sketch demonstrates reading a button input and toggling
-the built-in LED state each time the button is pressed.
+/*
+  Blink without Delay
+
+  Turns on and off a light emitting diode (LED) connected to a digital pin,
+  without using the delay() function. This means that other code can run at the
+  same time without being interrupted by the LED code.
+
+  created 2005
+  by David A. Mellis
+  modified 8 Feb 2010
+  by Paul Stoffregen
+  modified 11 Nov 2013
+  by Scott Fitzgerald
+  modified 9 Jan 2017
+  by Arturo Guadalupi
+
+  This example code is in the public domain.
+
+  https://docs.arduino.cc/built-in-examples/digital/BlinkWithoutDelay/
 */
 
-// Pin definitions
-const int buttonPin = 2;            // Button input on D2
-const int ledPin = LED_BUILTIN;     // Built-in LED
+// constants won't change. Used here to set a pin number:
+const int ledPin = LED_BUILTIN;  // the number of the LED pin
 
-// Variables to store button and LED state
-int buttonState = 0;
-int lastButtonState = HIGH;
-bool ledState = false;
+// Variables will change:
+int ledState = LOW;  // ledState used to set the LED
+
+// Generally, you should use "unsigned long" for variables that hold time
+// The value will quickly become too large for an int to store
+unsigned long previousMillis = 0;  // will store last time LED was updated
+
+// constants won't change:
+const long interval = 1000;  // interval at which to blink (milliseconds)
 
 void setup() {
-  // Initialize serial communication and wait up to 2.5 seconds for a connection
-  Serial.begin(115200);
-  for (auto startNow = millis() + 2500; !Serial && millis() < startNow; delay(500));
-  
-  // Configure pins
-  pinMode(buttonPin, INPUT_PULLUP);
+  // set the digital pin as output:
   pinMode(ledPin, OUTPUT);
-  
-  // Turn off LED initially
-  digitalWrite(ledPin, LOW);
-  
-  Serial.println("- Arduino Nano 33 BLE Sense - Combined Digital I/O Example started...");
-  Serial.println("- Press button to toggle the built-in LED");
 }
 
 void loop() {
-  // Read current button state
-  buttonState = digitalRead(buttonPin);
-  
-  // Check if button was just pressed (state change from HIGH to LOW)
-  if (buttonState == LOW && lastButtonState == HIGH) {
-    // Button press detected - toggle LED state
-    ledState = !ledState;
-    digitalWrite(ledPin, ledState);
-    
-    Serial.print("- Button pressed! LED is now ");
-    if (ledState) {
-      Serial.println("ON");
+  // here is where you'd put code that needs to be running all the time.
+
+  // check to see if it's time to blink the LED; that is, if the difference
+  // between the current time and last time you blinked the LED is bigger than
+  // the interval at which you want to blink the LED.
+  unsigned long currentMillis = millis();
+
+  if (currentMillis - previousMillis >= interval) {
+    // save the last time you blinked the LED
+    previousMillis = currentMillis;
+
+    // if the LED is off turn it on and vice-versa:
+    if (ledState == LOW) {
+      ledState = HIGH;
     } else {
-      Serial.println("OFF");
+      ledState = LOW;
     }
-    
-    // Simple debounce delay
-    delay(50);  
+
+    // set the LED with the ledState of the variable:
+    digitalWrite(ledPin, ledState);
   }
-  
-  // Save current button state for next iteration
-  lastButtonState = buttonState;
-  
-  // Small delay for stability
-  delay(10);
 }
+
 ```
 
-To test this example, connect a push button to the Nano 33 BLE Sense board as follows:
-
-- Connect one leg of a push button to pin `D2`
-- Connect the other leg of the push button to `GND`
-- No external components needed (using built-in LED and internal `INPUT_PULLUP`)
-
-![Digital pins test circuit on the Nano 33 BLE Sense board]()
-
-You should now see the built-in LED toggle on and off each time you press the button. The LED will stay in its current state until you press the button again. Additionally, you can open the Arduino IDE's Serial Monitor (Tools > Serial Monitor) to see messages indicating when the button is pressed and the current LED state.
-
-![Arduino IDE Serial Monitor output for the combined digital I/O example sketch]()
+You should now see the built-in LED of the Nano 33 BLE Sense turning on and off.
 
 ### Analog Pins
 
@@ -616,11 +619,11 @@ The Nano 33 BLE Sense's analog pins offer the following specifications:
 | **Specification**  |   **Value**   |          **Notes**          |
 | :----------------: | :-----------: | :-------------------------: |
 |   Input Voltage    | 0 to +3.3 VDC | Maximum safe input voltage  |
-| Default Resolution |    10-bit     |        Values 0-1023        |
-| Maximum Resolution |    12-bit     |        Values 0-4095        |
+| Default Resolution |               |           Values            |
+| Maximum Resolution |               |           Values            |
 | Default Reference  |   +3.3 VDC    |        AREF voltage         |
-|    Sample Rate     |   200 kSPS    |   Maximum sampling speed    |
-|      Accuracy      |    ±2 LSB     | Typical conversion accuracy |
+|    Sample Rate     |               |   Maximum sampling speed    |
+|      Accuracy      |               | Typical conversion accuracy |
 
 You can read analog values using the `analogRead()` function:
 
@@ -628,120 +631,63 @@ You can read analog values using the `analogRead()` function:
 value = analogRead(pin);
 ``` 
 
-The default reference voltage of these pins is +3.3 VDC. The default resolution is set to 10-bit, but it can be updated to 12-bit resolution using the analogReadResolution() function in the setup() of your sketch.
-
-***The following examples demonstrate basic analog pin functionality using simple connections that you can easily test with the Nano 33 BLE Sense board.***
-
-The following example demonstrates how to read an analog value and display it on the Serial Monitor:
+The following example demonstrates how to read an Analog sensor connected to the pin A0 and turn on and off  LED:
 
 ```arduino
-/**
-/**
-Analog Input Example for the Arduino Nano 33 BLE Sense Board
-Name: nano_33_ble_sense_analog_input.ino
-Purpose: This sketch demonstrates how to read an analog input
-and display the value on the Serial Monitor.
+/*
+  Analog Input
+
+  Demonstrates analog input by reading an analog sensor on analog pin 0 and
+  turning on and off a light emitting diode(LED) connected to digital pin 13.
+  The amount of time the LED will be on and off depends on the value obtained
+  by analogRead().
+
+  The circuit:
+  - potentiometer
+    center pin of the potentiometer to the analog input 0
+    one side pin (either one) to ground
+    the other side pin to +5V
+  - LED
+    anode (long leg) attached to digital output 13 through 220 ohm resistor
+    cathode (short leg) attached to ground
+
+  - Note: because most Arduinos have a built-in LED attached to pin 13 on the
+    board, the LED is optional.
+
+  created by David Cuartielles
+  modified 30 Aug 2011
+  By Tom Igoe
+
+  This example code is in the public domain.
+
+  https://docs.arduino.cc/built-in-examples/analog/AnalogInput/
 */
 
-// Analog input pin
-const int analogPin = A0;
+int sensorPin = A0;   // select the input pin for the potentiometer
+int ledPin = 13;      // select the pin for the LED
+int sensorValue = 0;  // variable to store the value coming from the sensor
 
 void setup() {
-  // Initialize serial communication and wait up to 2.5 seconds for a connection
-  Serial.begin(115200);
-  for (auto startNow = millis() + 2500; !Serial && millis() < startNow; delay(500));
-  
-  Serial.println("- Arduino Nano 33 BLE Sense - Analog Input Example started...");
-  Serial.println("- Reading analog values from pin A0");
+  // declare the ledPin as an OUTPUT:
+  pinMode(ledPin, OUTPUT);
 }
 
 void loop() {
-  // Read the analog value (0 - 1023 with 10-bit resolution)
-  int analogValue = analogRead(analogPin);
-  
-  // Convert to voltage (0 to +3.3 VDC)
-  float voltage = analogValue * (3.3 / 1023.0);
-  
-  // Display the results
-  Serial.print("- Analog Value: ");
-  Serial.print(analogValue);
-  Serial.print(" | Voltage: ");
-  Serial.print(voltage, 2);
-  Serial.println(" VDC");
-  
-  // Wait half a second before next reading
-  delay(500);  
+  // read the value from the sensor:
+  sensorValue = analogRead(sensorPin);
+  // turn the ledPin on
+  digitalWrite(ledPin, HIGH);
+  // stop the program for <sensorValue> milliseconds:
+  delay(sensorValue);
+  // turn the ledPin off:
+  digitalWrite(ledPin, LOW);
+  // stop the program for <sensorValue> milliseconds:
+  delay(sensorValue);
 }
+
 ```
-
-To test this example, connect a potentiometer to the Nano 33 BLE Sense board as follows:
-
-- Connect the middle pin of a potentiometer to `A0`
-- Connect one outer pin of the potentiometer to `3V3`
-- Connect the other outer pin of the potentiometer to `GND`
 
 ***Important: Never connect more than 3.3V to analog pins***
-
-![ADC test circuit on the Nano 33 BLE Sense board]()
-
-You can open the Arduino IDE's Serial Monitor (Tools > Serial Monitor) to see the real-time analog values and voltage measurements as you adjust the potentiometer. As you turn the potentiometer, the values will range from 0 to 1023, with corresponding voltage readings from 0 to +3.3 VDC.
-
-![Arduino IDE Serial Monitor output for the analog input example sketch]()
-
-The following example demonstrates how to use 12-bit resolution for more precise analog readings; **use the same potentiometer connection from the first example**:
-
-```arduino
-/**
-/**
-High-Resolution Analog Input Example for the Arduino Nano 33 BLE Sense Board
-Name: nano_33_ble_sense_analog_high_res.ino
-Purpose: This sketch demonstrates how to use 12-bit resolution
-for precise analog input measurements.
-*/
-
-// Analog input pin
-const int analogPin = A0;
-
-void setup() {
-  // Initialize serial communication and wait up to 2.5 seconds for a connection
-  Serial.begin(115200);
-  for (auto startNow = millis() + 2500; !Serial && millis() < startNow; delay(500));
-  
-  // Set analog read resolution to 12-bit (0 - 4095)
-  analogReadResolution(12);
-  
-  Serial.println("- Arduino Nano 33 BLE Sense - High-Resolution Analog Input Example started...");
-  Serial.println("- Using 12-bit resolution (0 - 4095)");
-}
-
-void loop() {
-  // Read the analog value (0 - 4095 with 12-bit resolution)
-  int analogValue = analogRead(analogPin);
-  
-  // Convert to voltage (0 - +3.3 VDC)
-  float voltage = analogValue * (3.3 / 4095.0);
-  
-  // Calculate percentage (0 - 100%)
-  float percentage = (analogValue / 4095.0) * 100.0;
-  
-  // Display the results
-  Serial.print("- Analog Value: ");
-  Serial.print(analogValue);
-  Serial.print(" | Voltage: ");
-  Serial.print(voltage, 3);
-  Serial.print(" VDC | Percentage: ");
-  Serial.print(percentage, 1);
-  Serial.println(" %");
-  
-  // Wait half a second before next reading
-  delay(500);
-}
-```
-
-You can open the Arduino IDE's Serial Monitor (Tools > Serial Monitor) to see the high-resolution analog values, voltage measurements and percentage calculations as you adjust the potentiometer. With 12-bit resolution, the values will range from 0 to 4095 instead of the standard 0 to 1023, providing higher precision for sensitive measurements.
-
-![Arduino IDE Serial Monitor output for the high-resolution analog input example sketch]()
-
 
 ### PWM (Pulse Width Modulation)
 
@@ -774,62 +720,53 @@ By default, the resolution is 8-bit (0 to 255). You can use analogWriteResolutio
 analogWriteResolution(resolution);
 ```
 
-***The following PWM examples use the built-in orange user LED (`LED_BUILTIN`) of the Nano 33 BLE Sense board, which supports PWM for brightness control. This eliminates the need for external components and allows you to test PWM functionality immediately.***
-
-The following example demonstrates how to control the brightness of the built-in orange user LED using PWM:
+The following example demonstrates how to control the brightness of a LED connected to the A9 pin using PWM:
 
 ```arduino
-/**
-PWM Example for the Arduino Nano 33 BLE Sense Board
-Name: nano_33_ble_sense_pwm_led.ino
-Purpose: This sketch demonstrates how to use PWM to control
-the brightness of the built-in user LED.
+/*
+  Fade
 
-@author Arduino Product Experience Team
-@version 1.0 01/06/25
+  This example shows how to fade an LED on pin 9 using the analogWrite()
+  function.
+
+  The analogWrite() function uses PWM, so if you want to change the pin you're
+  using, be sure to use another PWM capable pin. On most Arduino, the PWM pins
+  are identified with a "~" sign, like ~3, ~5, ~6, ~9, ~10 and ~11.
+
+  This example code is in the public domain.
+
+  https://docs.arduino.cc/built-in-examples/basics/Fade/
 */
 
-// Built-in LED pin (supports PWM)
-const int ledPin = LED_BUILTIN;
+int led = 9;         // the PWM pin the LED is attached to
+int brightness = 0;  // how bright the LED is
+int fadeAmount = 5;  // how many points to fade the LED by
 
+// the setup routine runs once when you press reset:
 void setup() {
-  // Initialize serial communication and wait up to 2.5 seconds for a connection
-  Serial.begin(115200);
-  for (auto startNow = millis() + 2500; !Serial && millis() < startNow; delay(500));
-  
-  Serial.println("- Arduino Nano 33 BLE Sense - PWM LED Example started...");
-  Serial.println("- Built-in LED will fade in and out continuously");
+  // declare pin 9 to be an output:
+  pinMode(led, OUTPUT);
 }
 
+// the loop routine runs over and over again forever:
 void loop() {
-  // Fade in (0 to 255)
-  for (int brightness = 0; brightness <= 255; brightness++) {
-    analogWrite(ledPin, brightness);
-    delay(5);
+  // set the brightness of pin 9:
+  analogWrite(led, brightness);
+
+  // change the brightness for next time through the loop:
+  brightness = brightness + fadeAmount;
+
+  // reverse the direction of the fading at the ends of the fade:
+  if (brightness <= 0 || brightness >= 255) {
+    fadeAmount = -fadeAmount;
   }
-  
-  Serial.println("- LED at maximum brightness");
-  delay(500);
-  
-  // Fade out (255 to 0)
-  for (int brightness = 255; brightness >= 0; brightness--) {
-    analogWrite(ledPin, brightness);
-    delay(5);
-  }
-  
-  Serial.println("- LED turned off");
-  delay(500);
+  // wait for 30 milliseconds to see the dimming effect
+  delay(30);
 }
+
 ```
 
-You should now see the built-in orange user LED of your Nano 33 BLE Sense board gradually fade in and out, creating a smooth breathing effect that repeats continuously.
-
-![Onboard RGB user LED fading]()
-
-Additionally, you can open the Arduino IDE's Serial Monitor (Tools > Serial Monitor) to see the status messages that the example sketch sends at key brightness levels.
-
-![Arduino IDE Serial Monitor output for the PWM example sketch]()
-
+You should now see the connected LED gradually fading in and out.
 
 
 ### 5V
@@ -869,90 +806,6 @@ The Nano 33 BLE Sense board uses the following pins for UART communication:
 |      `TX`       |         `P1.03`         |     Transmit      |  Transmit Data  |
 
 You can communicate via UART using the built-in `Serial` and `Serial1` objects. The `Serial` object is connected to the USB Micro port for computer communication, while `Serial1` is connected to pins `RX` and `TX` for external device communication.
-
-The following example demonstrates basic UART communication patterns:
-
-```arduino
-/**
-/**
-UART Basic Example for the Arduino Nano 33 BLE Sense Board
-Name: nano_33_ble_sense_uart_basic.ino
-Purpose: This sketch demonstrates basic UART communication
-using both USB Serial and hardware Serial1.
-
-@author Arduino Product Experience Team
-@version 1.0 01/06/25
-*/
-
-void setup() {
-  // Initialize USB serial communication at 115200 baud
-  Serial.begin(115200);
-  for (auto startNow = millis() + 2500; !Serial && millis() < startNow; delay(500));
-  
-  // Initialize hardware serial on RX/TX pins at 9600 baud
-  Serial1.begin(9600);
-  
-  Serial.println("- Arduino Nano 33 BLE Sense - UART Basic Example started...");
-  Serial.println("- USB Serial (Serial): 115200 baud");
-  Serial.println("- Hardware Serial (Serial1): 9600 baud on RX/TX");
-  Serial.println("- Connect external device to RX and TX pins");
-  Serial.println("- Type messages in Serial Monitor to send via Serial1");
-  Serial.println();
-}
-
-void loop() {
-  // Check for data from USB Serial (computer)
-  if (Serial.available()) {
-    String message = Serial.readString();
-    message.trim(); // Remove newline characters
-    
-    if (message.length() > 0) {
-      Serial.print("- USB received: \"");
-      Serial.print(message);
-      Serial.println("\"");
-      
-      // Send the message via Serial1 (RX/TX)
-      Serial1.print("- Message from USB: ");
-      Serial1.println(message);
-      
-      Serial.println("- Message sent via Serial1 (RX/TX)!");
-    }
-  }
-  
-  // Check for data from Serial1 (external device on RX/TX)
-  if (Serial1.available()) {
-    String response = Serial1.readString();
-    response.trim(); // Remove newline characters
-    
-    if (response.length() > 0) {
-      Serial.print("- Serial1 received: \"");
-      Serial.print(response);
-      Serial.println("\"");
-    }
-  }
-  
-  // Send periodic test data via Serial1
-  static unsigned long lastSend = 0;
-  if (millis() - lastSend > 3000) {
-    lastSend = millis();
-    
-    // Send test data with timestamp
-    Serial1.print("Test data: ");
-    Serial1.print(millis());
-    Serial1.println(" ms");
-    
-    Serial.println("- Periodic test data sent via Serial1!");
-  }
-  
-  delay(10);
-}
-```
-
-***To test this example, connect an external UART device to the `RX` and `TX` pins. The code will demonstrate UART communication patterns that can be observed with a logic analyzer or by connecting another serial device.***
-
-You can open the Arduino IDE's Serial Monitor (Tools > Serial Monitor) to interact with the USB serial port and observe the communication patterns.
-
-![Arduino IDE Serial Monitor output for the UART example sketch](assets/uart-1.png)
 
 
 The Nano 33 BLE Sense board provides two distinct UART communication channels, giving you the flexibility to handle multiple communication tasks simultaneously. The first channel is the USB Serial (`Serial`), which is your primary interface for programming and debugging. This channel offers several key features:
@@ -1337,7 +1190,159 @@ When working with I2C on the Nano 33 BLE Sense board, there are several key poin
 - When connecting multiple devices, simply connect all SDA pins together and all SCL pins together, along with power and ground connections.
 - The Nano 33 BLE Sense board can communicate with up to 127 different I2C devices on the same bus, making it perfect for complex sensor networks and expandable systems.
 
-## LSM9DS1 Sensor
+## Bluetooth®
+
+To enable Bluetooth® on the Nano 33 BLE Sense, we can use the [ArduinoBLE](https://www.arduino.cc/en/Reference/ArduinoBLE) library, and include it at the top of our sketch:
+
+```arduino
+#include <ArduinoBLE.h>
+```
+
+Set the service and characteristic:
+
+```arduino
+BLEService ledService("180A"); // BLE LED Service
+BLEByteCharacteristic switchCharacteristic("2A57", BLERead | BLEWrite);
+```
+
+Set advertised name and service:
+
+```arduino
+  BLE.setLocalName("Nano 33 BLE Sense");
+  BLE.setAdvertisedService(ledService);
+```
+
+Start advertising:
+
+```arduino
+BLE.advertise();
+```
+
+Listen for Bluetooth® Low Energy peripherals to connect:
+
+```arduino  
+BLEDevice central = BLE.central();
+```
+
+Here is an example of turning on an RGB LED over Bluetooth®:
+```arduino
+#include <ArduinoBLE.h>
+
+BLEService ledService("180A"); // BLE LED Service
+
+// BLE LED Switch Characteristic - custom 128-bit UUID, read and writable by central
+BLEByteCharacteristic switchCharacteristic("2A57", BLERead | BLEWrite);
+
+void setup() {
+  Serial.begin(9600);
+  while (!Serial);
+
+  // set LED's pin to output mode
+  pinMode(LEDR, OUTPUT);
+  pinMode(LEDG, OUTPUT);
+  pinMode(LEDB, OUTPUT);
+  pinMode(LED_BUILTIN, OUTPUT);
+  
+  digitalWrite(LED_BUILTIN, LOW);         // when the central disconnects, turn off the LED
+  digitalWrite(LEDR, HIGH);               // will turn the LED off
+  digitalWrite(LEDG, HIGH);               // will turn the LED off
+  digitalWrite(LEDB, HIGH);                // will turn the LED off
+
+  // begin initialization
+  if (!BLE.begin()) {
+    Serial.println("starting Bluetooth® Low Energy failed!");
+
+    while (1);
+  }
+
+  // set advertised local name and service UUID:
+  BLE.setLocalName("Nano 33 BLE Sense");
+  BLE.setAdvertisedService(ledService);
+
+  // add the characteristic to the service
+  ledService.addCharacteristic(switchCharacteristic);
+
+  // add service
+  BLE.addService(ledService);
+
+  // set the initial value for the characteristic:
+  switchCharacteristic.writeValue(0);
+
+  // start advertising
+  BLE.advertise();
+
+  Serial.println("BLE LED Peripheral");
+}
+
+void loop() {
+  // listen for Bluetooth® Low Energy peripherals to connect:
+  BLEDevice central = BLE.central();
+
+  // if a central is connected to peripheral:
+  if (central) {
+    Serial.print("Connected to central: ");
+    // print the central's MAC address:
+    Serial.println(central.address());
+    digitalWrite(LED_BUILTIN, HIGH);            // turn on the LED to indicate the connection
+
+    // while the central is still connected to peripheral:
+    while (central.connected()) {
+      // if the remote device wrote to the characteristic,
+      // use the value to control the LED:
+      if (switchCharacteristic.written()) {
+        switch (switchCharacteristic.value()) {   // any value other than 0
+          case 01:
+            Serial.println("Red LED on");
+            digitalWrite(LEDR, LOW);            // will turn the LED on
+            digitalWrite(LEDG, HIGH);         // will turn the LED off
+            digitalWrite(LEDB, HIGH);         // will turn the LED off
+            break;
+          case 02:
+            Serial.println("Green LED on");
+            digitalWrite(LEDR, HIGH);         // will turn the LED off
+            digitalWrite(LEDG, LOW);        // will turn the LED on
+            digitalWrite(LEDB, HIGH);        // will turn the LED off
+            break;
+          case 03:
+            Serial.println("Blue LED on");
+            digitalWrite(LEDR, HIGH);         // will turn the LED off
+            digitalWrite(LEDG, HIGH);       // will turn the LED off
+            digitalWrite(LEDB, LOW);         // will turn the LED on
+            break;
+          default:
+            Serial.println(F("LEDs off"));
+            digitalWrite(LEDR, HIGH);          // will turn the LED off
+            digitalWrite(LEDG, HIGH);        // will turn the LED off
+            digitalWrite(LEDB, HIGH);         // will turn the LED off
+            break;
+        }
+      }
+    }
+
+    // when the central disconnects, print it out:
+    Serial.print(F("Disconnected from central: "));
+    Serial.println(central.address());
+    digitalWrite(LED_BUILTIN, LOW);         // when the central disconnects, turn off the LED
+    digitalWrite(LEDR, HIGH);          // will turn the LED off
+    digitalWrite(LEDG, HIGH);        // will turn the LED off
+    digitalWrite(LEDB, HIGH);         // will turn the LED off
+  }
+}
+```
+
+Once we are finished with the coding, we can upload the sketch to the board. When it has successfully uploaded, open the Serial Monitor. In the Serial Monitor, the text **"BLE LED Peripheral"** will appear as seen in the image below.
+
+![Serial Monitor output.](./assets/nano33BS_09_printing_values.png)
+
+We can now discover our Nano 33 BLE Sense board in the list of available Bluetooth® devices. To access the service and characteristic we recommend using the **LightBlue** application. Follow <a href="https://apps.apple.com/us/app/lightblue/id557428110">this link for iPhones</a> or <a href="https://play.google.com/store/apps/details?id=com.punchthrough.lightblueexplorer&hl=en">this link for Android phones</a>.
+
+Once we have the application open, follow the image below for instructions:
+
+![Accessing through a Bluetooth® phone app.](./assets/nano33BS_09_application.png)
+
+To control the RGB LED, we simply need to write 1,2 or 3 in the "WRITTEN VALUES" field to turn on the red, blue or the green LED and any other value to turn them off. This is within the **"Digital Output"** characteristic, which is located under **"Device Information"**.
+
+## IMU Sensor
 
 IMU stands for: inertial measurement unit. It is an electronic device that measures and reports a body's specific force, angular rate and the orientation of the body, using a combination of accelerometers, gyroscopes, and oftentimes magnetometers.
 
@@ -1630,7 +1635,7 @@ Here is a screenshot illustrating the board's position:
 
 ![Checking for magnetic disturbance.](./assets/nano33BS_04_illustration.png)
 
-### APDS9960
+### Proximity and Gesture Sensor
 
 The APDS9960 chip allows for measuring digital proximity and ambient light as well as for detecting RGB colors and gestures.
 
@@ -1880,7 +1885,7 @@ Here is a screenshot example of the sketch returning values.
 
 ![Gesture detections printed in the Serial Monitor.](assets/nano33BS_07_printing_values.png) 
 
-## HTS221 Sensor
+## Temperature and Humidity Sensor
 
 The HTS221 is an ultra-compact sensor for relative humidity and temperature. We will use the I2C protocol to communicate with the sensor and get data from it. The sensor's range of different values are the following:
 
@@ -1988,7 +1993,7 @@ The following image shows how the data should be displayed.
 
 ![Temperature & humidity printed in the Serial Monitor.](assets/nano33BS_01_printing_values.png)
 
-## LPS22HB Sensor
+## Barometric Pressure Sensor
 
 The **LPS22HB** picks up on barometric pressure and allows for a 24-bit pressure data output between 260 to 1260 hPa. This data can also be processed to calculate the height above sea level of the current location.
 
