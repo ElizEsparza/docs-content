@@ -1,37 +1,25 @@
 <FeatureDescription>
 
-The Arduino Nano 33 BLE Sense is a great choice for any beginner, maker or professional to get started with embedded machine learning. It is build upon the [nRF52840 microcontroller](https://content.arduino.cc/assets/Nano_BLE_MCU-nRF52840_PS_v1.1.pdf) and runs on **Arm® Mbed™ OS**. The Nano 33 BLE Sense not only features the possibility to connect via **Bluetooth® Low Energy** but also comes equipped with **sensors** to detect color, proximity, motion, temperature, humidity, audio and more.
+The Arduino Nano 33 BLE Sense is an excellent choice for beginners, makers, and professionals getting started with embedded machine learning and IoT applications. Built on the powerful nRF52840 microcontroller with a 64 MHz Arm® Cortex®-M4F processor, this board combines Bluetooth® Low Energy 5.0 connectivity with a comprehensive sensor suite. With 1 MB Flash memory and 256 KB SRAM, it provides ample space for complex applications while maintaining the compact Nano form factor.
 
 </FeatureDescription>
 
 
 <FeatureList>
 
-<Feature title="Bluetooth®" image="bluetooth">
-
-  A powerful 2.4 GHz Bluetooth® 5 Low Energy module from u-blox, with an internal antenna. Can be used to transmit data between different devices
-  using the ArduinoBLE library.
+<Feature title="Bluetooth® Low Energy 5.0" image="bluetooth">
+  Features the NINA-B306 module with Bluetooth® Low Energy 5.0 and internal antenna. Enables wireless communication with smartphones, tablets, and other BLE devices for IoT applications and data transmission using the ArduinoBLE library.
 <FeatureWrapper>
   <FeatureLink variant="primary" title="Documentation" url="/tutorials/nano-33-ble-sense/ble-device-to-device"/>
   <FeatureLink variant="secondary" title="Library" url="https://www.arduino.cc/reference/en/libraries/arduinoble/"/>
 </FeatureWrapper>
 </Feature>
 
-<Feature title="IMU for Motion Detection" image="imu">
-
+<Feature title="9-axis IMU" image="imu">
   The LSM9DS1 inertial measurement unit features a 3D accelerometer, gyroscope and magnetometer allowing you to detect orientation, motion or vibrations in your project.
 <FeatureWrapper>
   <FeatureLink variant="primary" title="Documentation" url="/tutorials/nano-33-ble-sense/imu-accelerometer"/>
   <FeatureLink variant="secondary" title="Library" url="https://www.arduino.cc/reference/en/libraries/arduino_lsm9ds1/"/>
-</FeatureWrapper>
-</Feature>
-
-<Feature title="Python® Support" image="python">
-
-  This board can be programmed using MicroPython which is an implementation of the Python® programming language that comes with a subset of the Python® standard library.
-<FeatureWrapper>
-  <FeatureLink variant="primary" title="Documentation" url="/tutorials/nano-33-ble-sense/micropython-installation"/>
-  <FeatureLink variant="secondary" title="Learn More" url="/micropython"/>
 </FeatureWrapper>
 </Feature>
 

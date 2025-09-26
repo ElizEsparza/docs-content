@@ -27,18 +27,15 @@ This user manual provides a comprehensive overview of the Nano 33 BLE Sense boar
 
 - Nano 33 BLE Sense (x1)
 - [USB Micro cable (x1)](https://store-usa.arduino.cc/products/usb-2-0-cable-type-a-micro)
-- [Breadboard (x1) (recommended)](https://store.arduino.cc/products/breadboard-400-contacts)
-- [Male/male jumper wires (recommended)](https://store.arduino.cc/products/10-jumper-wires-150mm-male?queryID=undefined)
 
 ### Software Requirements
 
 - [Arduino IDE 2.0+](https://www.arduino.cc/en/software/), [OpenMV IDE](https://docs.arduino.cc/tutorials/nano-33-ble-sense/cheat-sheet/#imu) or [Arduino Web Editor](https://create.arduino.cc/editor)
 - [Arduino Mbed OS Nano Board Package](https://github.com/arduino/ArduinoCore-mbed).
 
+***The Nano 33 BLE Sense is compatible with the complete Arduino ecosystem and can be programmed directly as a standalone device.***
 
 ## Nano 33 BLE Sense Overview
-
-
 
 The Arduino Nano 33 BLE Sense represents a significant leap in the Nano family, integrating the powerful Nordic nRF52480 microcontroller with an Arm® Cortex®-M4F core and a comprehensive suite of embedded sensors into the classic, compact form factor. This board is designed to bridge the gap between simple prototyping and advanced IoT development, providing the computational power and connectivity essential for modern applications.
 
@@ -55,40 +52,25 @@ The bottom view of the Nano 33 BLE Sense board is shown in the image below:
 Here is an overview of the board's main components shown in the images above:
 
 - Microcontroller: The heart of the NINA-B306 module is the Nordic Semiconductor nRF52480 microcontroller, based on a 64 MHz Arm® Cortex®-M4F processor with a floating-point unit (FPU). It provides 1 MB of Flash memory and 256 KB of SRAM for application development. Important: The board operates at 3.3V, and its I/O pins are not 5V tolerant.
-
-- Micro-USB connector: The board uses a Micro-B USB connector for programming, power supply, and serial communication with a computer or other host device.
-
-- Onboard user LED: The board includes an onboard user-programmable RGB LED to provide visual feedback.
-
-- Power LED: A green power indicator LED (LED_PWR) illuminates when the board is powered.
-  
-- Integrated Sensor Hub: A defining feature of this board is its comprehensive suite of onboard sensors, including a 9-axis IMU ([LSM9DS1](https://www.st.com/resource/en/datasheet/lsm9ds1.pdf)), a humidity and temperature sensor ([HTS221](https://www.st.com/resource/en/datasheet/lsm9ds1.pdf)), a barometric pressure sensor ([LPS22HB](https://www.st.com/resource/en/datasheet/lps22hb.pdf)), a digital microphone ([MP34DT05](https://www.st.com/resource/en/datasheet/mp34dt05-a.pdf)), and a gesture, proximity, color, and light sensor ([APDS-9960](https://content.arduino.cc/assets/Nano_BLE_Sense_av02-4191en_ds_apds-9960.pdf)).
-
+- Programmable RGB LED: The board includes an onboard user-programmable RGB LED to provide visual feedback.
+- Integrated Sensors: A defining feature of this board is its comprehensive suite of onboard sensors, including a 9-axis IMU ([LSM9DS1](https://www.st.com/resource/en/datasheet/lsm9ds1.pdf)), a humidity and temperature sensor ([HTS221](https://www.st.com/resource/en/datasheet/lsm9ds1.pdf)), a barometric pressure sensor ([LPS22HB](https://www.st.com/resource/en/datasheet/lps22hb.pdf)), a digital microphone ([MP34DT05](https://www.st.com/resource/en/datasheet/mp34dt05-a.pdf)), and a gesture, proximity, color, and light sensor ([APDS-9960](https://content.arduino.cc/assets/Nano_BLE_Sense_av02-4191en_ds_apds-9960.pdf)).
 - Castellated Pins: The board's castellated pins allow for surface mounting as a module, facilitating direct integration into custom PCB designs and final products without the need for headers.
-
 - Cryptographic co-processor: The board includes a Microchip ATECC608A secure element, which provides hardware-based secure storage for up to 16 keys, certificates, or data. This enables robust security for IoT applications, supporting ECDH key agreement and AES-128 encryption.
-
-- Wireless communication: The board features Bluetooth® 5 connectivity through the NINA-B306 module, supporting features like 2 Mbps throughput, long-range mode, and advertising extensions. The module also includes an IEEE 802.15.4 radio.
+- Bluetooth: The Nano 33 BLE Sense features Bluetooth® connectivity through the NINA-B306 module, supporting features like 2 Mbps throughput, long-range mode, and advertising extensions. The module also includes an IEEE 802.15.4 radio.
 
 ### Board Core and Libraries
 
-The **Arduino Mbed OS Nano Boards** core contains the libraries and examples to work with the Arduino Nano 33 BLE Sense's peripherals and onboard components, such as its nRF52480 microcontroller, advanced wireless capabilities, and the extensive suite of integrated sensors. To install the core for the Nano 33 BLE Sense board, navigate to **Tools > Board > Boards Manager** or click the Boards Manager icon in the left tab of the IDE. In the Boards Manager tab, search for Nano 33 BLE and install the latest Arduino Mbed OS Nano Boards package.
+The **Arduino Mbed OS Nano Boards** core contains the libraries and examples to work with the Arduino Nano 33 BLE Sense's peripherals and onboard components. To install the core for the Nano 33 BLE Sense board, navigate to **Tools > Board > Boards Manager** or click the Boards Manager icon in the left tab of the IDE. In the Boards Manager tab, search for Nano 33 BLE and install the latest Arduino Mbed OS Nano Boards package.
 
 The Arduino Mbed OS Nano Boards core provides support for the following:
 
-- Board control and configuration (reset, pin configuration, and low-power management)
-
-- Wireless communication (Bluetooth® Low Energy)
-
-- Advanced peripheral functions (12-bit ADC, PWM)
-
-- Communication interfaces (UART, I2C, SPI)
-
-- Onboard sensor hub access (IMU, microphone, humidity, pressure, gesture, color, light)
-
-- Cryptographic functions (Secure hardware-based key storage with the ATECC608A)
-
+- Board control and configuration (reset, pin configuration and power management)
+- Communication interfaces (UART, I²C and SPI)
+- Onboard LED control (RGB LED and orange LED)
+- HID emulation capabilities (keyboard and mouse)
 - Standard Arduino libraries compatibility
+
+***__Important note:__ Since the Nano 33 BLE Sense uses the same nRF52840 microcontroller as the Nano 33 BLE family, it shares complete code and library compatibility, making it easy to transition projects between these boards.***
 
 ### Pinout
 ![Nano 33 BLE Sense pinout.](assets/pinout.png)
@@ -104,10 +86,10 @@ The complete datasheet is available and downloadable as PDF from the link below:
 The complete schematics are available and downloadable as PDF from the link below:
 - [Nano 33 BLE Sense schematics](https://docs.arduino.cc/resources/schematics/ABX00031-schematics.pdf)
 
-### STEP Files
-The complete STEP files are available and downloadable from the link below:
+### CAD Files
+The complete CAD files are available and downloadable from the link below:
 
-- [Nano 33 BLE Sense STEP files](https://docs.arduino.cc/resources/schematics/ABX00031-schematics.pdf)
+- [Nano 33 BLE Sense CAD files](https://docs.arduino.cc/resources/schematics/ABX00031-schematics.pdf)
 
 ## First Use
 
@@ -149,6 +131,8 @@ To maintain the classic Nano form factor while protecting the board, the 5V pin 
 
 - **How to Enable 5V Output:** To make the 5V pin active, you must create a solder bridge on the two pads marked VUSB on the bottom of the board.
 
+![Soldering the VUSB pins.](assets/Nano33_ble_sense_vusb.png)
+
 - **USB Power Only:** Even with the solder bridge, the 5V pin will only output voltage when the board is powered via the USB port. If you power the board from the VIN pin, the 5V pin will remain inactive.
 
 - **Design Recommendation:** The onboard 3V3 pin is always available. We strongly recommend designing your projects to use 3.3V for sensors and actuators, as this is becoming the standard voltage for electronic ICs.
@@ -161,25 +145,11 @@ The Nano 33 BLE Sense includes an efficient MPM3610 DC-DC converter that regulat
 
 - nRF52480 Microcontroller: The main processor core and its internal peripherals.
 
-- Integrated Sensor Hub: Powers all onboard sensors (IMU, microphone, humidity, pressure, gesture sensor).
+- Integrated Sensors: Powers all onboard sensors (IMU, microphone, humidity, pressure, gesture sensor).
 
 - Cryptographic Co-processor: Powers the ATECC608A secure element.
 
 - I/O Pin Voltage: All digital and analog pins operate at this voltage.
-
-### Onboard Sensors and Peripherals
-
-The board's unique integrated sensor hub is powered by the internal +3.3 VDC supply and includes the following components, which can be accessed through dedicated libraries:
-
-- **9-axis IMU (LSM9DS1)**: For motion and orientation sensing.
-
-- **Digital Microphone (MP34DT05):** For audio capture.
-
-- **Humidity and Temperature Sensor (HTS221):** For environmental monitoring.
-
-- **Barometric Pressure Sensor (LPS22HB):** For weather forecasting and altitude measurement.
-
-- **Gesture, Proximity, Light, Color Sensor (APDS-9960):** For detecting user interaction and ambient light conditions.
 
 ### Hello World Example
 
@@ -230,23 +200,7 @@ void loop() {
 
 To upload the sketch to the board, click the **Verify** button to compile the sketch and check for errors, then click the **Upload** button to program the device with the sketch.
 
-![Uploading a sketch to the Nano 33 BLE Sense in the Arduino IDE]()
-
 As shown in the animation below, you should see the built-in orange user LED of your Nano 33 BLE Sense board turn on for one second, then turn off for one second, repeating this cycle continuously. 
-
-![Onboard orange user LED blinking]()
-
-Additionally, you can open the Arduino IDE's Serial Monitor (Tools > Serial Monitor) to see the status messages that the example sketch sends each time the LED state changes.
-
-![Arduino IDE Serial Monitor output for the Blink sketch]()
-
-This example confirms the following:
-
-- The Nano 33 BLE Sense board is correctly connected
-- The Arduino IDE is properly configured
-- The board is functioning correctly
-- USB communication is working
-- Digital pins respond to commands
 
 Congratulations! You have successfully completed your first program on the Nano 33 BLE Sense board. You are now ready to explore the more advanced features of this tiny but powerful board.
 
@@ -258,14 +212,11 @@ This user manual section covers the Nano 33 BLE Sense built-in LEDs, showing the
 
 The Nano 33 BLE Sense features a green power indicator LED (LED_PWR) that illuminates when the board is powered via USB or an external source.
 
-
 This LED is controlled by the hardware and cannot be programmed by the user. It serves as a visual confirmation that the board is receiving power.
 
 ### RGB LED
 
 The Nano 33 BLE Sense features a built-in RGB LED that can be used as a visual feedback indicator for the user.
-
-![Built-in RGB LED of the Nano 33 BLE Sense board]()
 
 The built-in RGB LED can be accessed through the following macro definitions:
 
@@ -354,68 +305,15 @@ void loop() {
 
 You should now see the built-in RGB LED cycling through white, red, green, blue, yellow, magenta, and cyan colors followed by a brief moment with all LEDs off, repeating this pattern continuously.
 
-![Onboard RGB user LED blinking]()
-
 ### User LED
 
 The Nano 33 BLE Sense also features a built-in orange user LED that can be used for basic status indications and debugging purposes.
-
-![Built-in user LED of the Nano 33 BLE Sense board]()
-
 
 The built-in user LED can be accessed through the following macro definition:
 
 | **Built-in LED** | **Macro Definition** | **Microcontroller Pin** |
 | :--------------: | :------------------: | :---------------------: |
 | Orange User LED  |    `LED_BUILTIN`     |         `P0.13`         |
-
-The following example sketch demonstrates how to control the built-in user LED:
-
-```arduino
-/**
-User LED Example for the Arduino Nano 33 BLE Sense Board
-Name: nano_r4_user_led.ino
-Purpose: This sketch demonstrates how to control the built-in
-user LED of the Arduino Nano 33 BLE Sense board.
-
-@author Arduino Product Experience Team
-@version 1.0 01/06/25
-*/
-
-void setup() {
-  // Initialize serial communication and wait up to 2.5 seconds for a connection
-  Serial.begin(115200);
-  for (auto startNow = millis() + 2500; !Serial && millis() < startNow; delay(500));
-  
-  // Configure LED_BUILTIN pin as output
-  pinMode(LED_BUILTIN, OUTPUT);
-  
-  // Turn off LED initially
-  digitalWrite(LED_BUILTIN, LOW);
-  
-  Serial.println("- Arduino Nano 33 BLE Sense - User LED Example started...");
-}
-
-void loop() {
-  // Turn on the built-in user LED
-  digitalWrite(LED_BUILTIN, HIGH);
-  Serial.println("- User LED on!");
-  delay(1000);
-  
-  // Turn off the built-in user LED
-  digitalWrite(LED_BUILTIN, LOW);
-  Serial.println("- User LED off!");
-  delay(1000);
-}
-```
-
-You should now see the built-in orange user LED blinking on and off at 1-second intervals, repeating this pattern continuously.
-
-![Onboard RGB user LED blinking]()
-
-Additionally, you can open the Arduino IDE's Serial Monitor (Tools > Serial Monitor) to see the status messages that the example sketch sends each time the user LED state changes.
-
-![Arduino IDE Serial Monitor output for the orange LED example sketch]()
 
 ## Pins
 
@@ -434,14 +332,10 @@ The Nano 33 BLE Sense's pins are organized into the following categories:
 
 |   **Pin Type**   | **Count** |      **Pin Numbers**      |               **Primary Functions**                |
 | :--------------: | :-------: | :-----------------------: | :------------------------------------------------: |
-| **Digital Pins** |    14     |       `D2` - `D13`        |        Digital I/O, PWM (5 pins), SPI, UART        |
+| **Digital Pins** |    14     |       `D0` - `D13`        |        Digital I/O, PWM (5 pins), SPI, UART        |
 | **Analog Pins**  |     8     |        `A0` - `A7`        |     Analog input, Digital I/O, I2C, DAC (`A0`)     |
 |  **Power Pins**  |     4     | `VIN`, `5V`, `3V3`, `GND` |              Power supply and ground               |
 | **Special Pins** |     3     |  `RESET`, `AREF`, `VUSB`  | System control, reference, and power configuration |
-
-
-***Please note: Pins A4 and A5 have internal pull-ups and are dedicated to the onboard I2C bus by default. Their use as analog inputs is not recommended.***
-
 
 The following table shows the electrical specifications and operating limits for all pins on the Nano 33 BLE Sense board:
 
@@ -449,17 +343,15 @@ The following table shows the electrical specifications and operating limits for
 | :---------------------: | :----------: | :------------------------------: |
 |  **Operating Voltage**  |   +3.3 VDC   | Logic level for all digital pins |
 | **Input Voltage Range** | 0 - +3.3 VDC |    Not 5 VDC tolerant inputs     |
-| **Max Current per Pin** |              |    Source/sink current limit     |
-|  **Max Total Current**  |              |  Combined current for all pins   |
+| **Max Current per Pin** |    10 mA     |    Source/sink current limit     |
+|  **Max Total Current**  |    200mA     |  Combined current for all pins   |
 |  **Analog Reference**   |   +3.3 VDC   |      Default `AREF` voltage      |
 
 **Important safety considerations when working with the Nano 33 BLE Sense pins:**
 
 - Never exceed +3.3 VDC on any I/O pin. The board is NOT 5V TOLERANT.
-
-- The +5V pin is an INPUT only when the VUSB solder jumper is bridged and the board is powered by USB. It is never an output.
-
-- Always use logic level converters when interfacing with 5V devices.
+- Connecting higher voltage signals, like the 5V commonly used with the other Arduino boards, will damage the Arduino Nano 33 BLE Sense.
+- The +5V pin can be an OUTPUT when the VUSB solder jumper is bridged and the board is powered by USB. It is not an input and does not supply voltage under any other conditions.
 
 
 ### Digital Pins
@@ -468,37 +360,38 @@ The Nano 33 BLE Sense features 14 digital pins (`D2` to `D13`, `RX`, `TX`) that 
 
 The Nano 33 BLE Sense digital pins provide the following functionality:
 
-| **Arduino Pin** | **Microcontroller Pin** | **Additional Functions** |             **Special Features**              |
-| :-------------: | :---------------------: | :----------------------: | :-------------------------------------------: |
-|      `RX`       |         `P1.10`         |         UART RX          |             Serial communication              |
-|      `TX`       |         `P1.03`         |         UART TX          |             Serial communication              |
-|      `D2`       |         `P1.11`         |            -             |                  Digital I/O                  |
-|      `D3`       |         `P1.12`         |           PWM            |                  Digital I/O                  |
-|      `D4`       |         `P1.15`         |            -             |                  Digital I/O                  |
-|      `D5`       |         `P1.13`         |           PWM            |                  Digital I/O                  |
-|      `D6`       |         `P1.14`         |           PWM            |                  Digital I/O                  |
-|      `D7`       |         `P0.23`         |            -             |                  Digital I/O                  |
-|      `D8`       |         `P0.21`         |            -             |                  Digital I/O                  |
-|      `D9`       |         `P0.27`         |           PWM            |                  Digital I/O                  |
-|      `D10`      |         `P1.02`         |           PWM            |               SPI communication               |
-|      `D11`      |         `P1.01`         |      SPI MOSI, PWM       |               SPI communication               |
-|      `D12`      |         `P0.08`         |         SPI MISO         |               SPI communication               |
-|      `D13`      |         `P0.13`         |         SPI SCK          | SPI communication, Built-in LED (LED_BUILTIN) |
+| **Arduino Pin** | **Microcontroller Pin** | **Additional Functions** |      **Special Features**       |
+| :-------------: | :---------------------: | :----------------------: | :-----------------------------: |
+|      `RX`       |         `P1.10`         |         UART RX          |      Serial communication       |
+|      `TX`       |         `P1.03`         |         UART TX          |      Serial communication       |
+|      `D2`       |         `P1.11`         |           PWM            |       External Interrupt        |
+|      `D3`       |         `P1.12`         |           PWM            |       External Interrupt        |
+|      `D4`       |         `P1.15`         |           PWM            |       External Interrupt        |
+|      `D5`       |         `P1.13`         |           PWM            |       External Interrupt        |
+|      `D6`       |         `P1.14`         |           PWM            |       External Interrupt        |
+|      `D7`       |         `P0.23`         |           PWM            |       External Interrupt        |
+|      `D8`       |         `P0.21`         |           PWM            |       External Interrupt        |
+|      `D9`       |         `P0.27`         |           PWM            |       External Interrupt        |
+|      `D10`      |         `P1.02`         |       SPI CS, PWM        |        SPI communication        |
+|      `D11`      |         `P1.01`         |      SPI MOSI, PWM       |        SPI communication        |
+|      `D12`      |         `P0.08`         |      SPI MISO, PWM       |        SPI communication        |
+|      `D13`      |         `P0.13`         |       SPI SCK, PWM       | SPI communication, Built-in LED |
 
-***__Important note:__  Pins `RX` and `TX` are used for serial communication (UART) and should be avoided for general digital I/O when using Serial communication. Pins `D11` (COPI), `D12` (CIPO), and `D13` (SCK) are used for SPI communication.***
+***__Important note:__  Pins `RX` and `TX` are used for serial communication (UART) and should be avoided for general digital I/O when using Serial communication. Pins `D10` (CS),`D11` (MOSI), `D12` (MISO), and `D13` (SCK) are used for SPI communication.***
 
 
 The Nano 33 BLE Sense's digital pins offer the following specifications:
 
-|  **Specification**   |   **Value**   |                     **Notes**                     |
-| :------------------: | :-----------: | :-----------------------------------------------: |
-|    Logic Voltage     |   +3.3 VDC    |           `HIGH` and `LOW` logic levels           |
-|    Input Voltage     | 0 to +3.3 VDC |                Not 5 VDC tolerant                 |
-| Max Current (Source) |               |        Recommended per pin source current         |
-|  Max Current (Sink)  |               |         Recommended per pin sink current          |
-|  Total Max Current   |               | Recommended combined for all GPIO and 3V3 pin use |
-|    Digital `HIGH`    |               |            Minimum voltage for `HIGH`             |
-|    Digital `LOW`     |               |             Maximum voltage for `LOW`             |
+|  **Specification**   |   **Value**    |           **Notes**           |
+| :------------------: | :------------: | :---------------------------: |
+|    Logic Voltage     |    +3.3 VDC    | `HIGH` and `LOW` logic levels |
+|    Input Voltage     | 0 to +3.3 VDC  |      Not 5 VDC tolerant       |
+| Max Current (Source) |     10 mA      |    Per pin source current     |
+|  Max Current (Sink)  |     10 mA      |     Per pin sink current      |
+|  Total Max Current   |     200 mA     |     Combined for all pins     |
+|   Input Resistance   |    20-50 kΩ    |   Internal pull-up resistor   |
+|    Digital `HIGH`    | +2 to +3.3 VDC |  Minimum voltage for `HIGH`   |
+|    Digital `LOW`     | 0 to +1.5 VDC  |   Maximum voltage for `LOW`   |
 
 Digital pins can be configured and controlled using the following basic Arduino functions.
 
@@ -522,78 +415,6 @@ digitalRead(pin);
 
 The available pin modes are `OUTPUT` for digital output, `INPUT` for digital input with high impedance, and `INPUT_PULLUP` for digital input with the internal pull-up resistor enabled. Digital output values can be `HIGH` (+3.3 VDC) or `LOW` (0 VDC), and digital input readings will return `HIGH` or `LOW` based on the voltage level detected on the pin.
 
-***The following example demonstrate basic digital pin functionality using simple connections that you can easily test with the Nano 33 BLE Sense board.*** 
-
-The following example demonstrates turning on and off using the on-board LED:
-
-```arduino
-/*
-  Blink without Delay
-
-  Turns on and off a light emitting diode (LED) connected to a digital pin,
-  without using the delay() function. This means that other code can run at the
-  same time without being interrupted by the LED code.
-
-  created 2005
-  by David A. Mellis
-  modified 8 Feb 2010
-  by Paul Stoffregen
-  modified 11 Nov 2013
-  by Scott Fitzgerald
-  modified 9 Jan 2017
-  by Arturo Guadalupi
-
-  This example code is in the public domain.
-
-  https://docs.arduino.cc/built-in-examples/digital/BlinkWithoutDelay/
-*/
-
-// constants won't change. Used here to set a pin number:
-const int ledPin = LED_BUILTIN;  // the number of the LED pin
-
-// Variables will change:
-int ledState = LOW;  // ledState used to set the LED
-
-// Generally, you should use "unsigned long" for variables that hold time
-// The value will quickly become too large for an int to store
-unsigned long previousMillis = 0;  // will store last time LED was updated
-
-// constants won't change:
-const long interval = 1000;  // interval at which to blink (milliseconds)
-
-void setup() {
-  // set the digital pin as output:
-  pinMode(ledPin, OUTPUT);
-}
-
-void loop() {
-  // here is where you'd put code that needs to be running all the time.
-
-  // check to see if it's time to blink the LED; that is, if the difference
-  // between the current time and last time you blinked the LED is bigger than
-  // the interval at which you want to blink the LED.
-  unsigned long currentMillis = millis();
-
-  if (currentMillis - previousMillis >= interval) {
-    // save the last time you blinked the LED
-    previousMillis = currentMillis;
-
-    // if the LED is off turn it on and vice-versa:
-    if (ledState == LOW) {
-      ledState = HIGH;
-    } else {
-      ledState = LOW;
-    }
-
-    // set the LED with the ledState of the variable:
-    digitalWrite(ledPin, ledState);
-  }
-}
-
-```
-
-You should now see the built-in LED of the Nano 33 BLE Sense turning on and off.
-
 ### Analog Pins
 
 The Nano 33 BLE Sense features 8 analog input pins (`A0` to `A7`) that can be read using the `analogRead()` function. These pins allow you to measure continuously varying voltages, making them perfect for reading sensors like potentiometers, light sensors, temperature sensors and other analog components and devices. The analog-to-digital converter (ADC) built into the nRF52840 microcontroller of the Nano 33 BLE Sense board converts the analog voltage into a digital value that your sketch can process.
@@ -602,28 +423,27 @@ The Nano 33 BLE Sense analog pins provide the following functionality:
 
 | **Arduino Pin** | **Microcontroller Pin** | **Additional Functions** | **Special Features** |
 | :-------------: | :---------------------: | :----------------------: | :------------------: |
-|      `A0`       |         `P0.04`         |       Digital I/O        |          -           |
-|      `A1`       |         `P0.05`         |       Digital I/O        |          -           |
-|      `A2`       |         `P0.30`         |       Digital I/O        |          -           |
-|      `A3`       |         `P0.29`         |       Digital I/O        |          -           |
-|      `A4`       |         `P0.31`         |  SDA (I2C), Digital I/O  |  I2C communication   |
-|      `A5`       |         `P0.02`         |  SCL (I2C), Digital I/O  |  I2C communication   |
-|      `A6`       |         `P0.28`         |      Analog In Only      | No digital function  |
-|      `A7`       |         `P0.03`         |      Analog In Only      | No digital function  |
+|      `A0`       |         `P0.04`         |           DAC            |      12-bit DAC      |
+|      `A1`       |         `P0.05`         |        Analog In         |    Analog In Only    |
+|      `A2`       |         `P0.30`         |        Analog In         |    Analog In Only    |
+|      `A3`       |         `P0.29`         |        Analog In         |    Analog In Only    |
+|      `A4`       |         `P0.31`         |        SDA (I2C)         |  I2C communication   |
+|      `A5`       |         `P0.02`         |        SCL (I2C)         |  I2C communication   |
+|      `A6`       |         `P0.28`         |        Analog In         |    Analog In Only    |
+|      `A7`       |         `P0.03`         |        Analog In         |    Analog In Only    |
 
 ***__Important note:__ Pins `A4` and `A5` are dedicated to I2C communication (SDA and SCL respectively) and have internal pull-up resistors enabled by default. Pins `A6` and `A7` are analog-only and cannot be used as digital pins.***
 
 
 The Nano 33 BLE Sense's analog pins offer the following specifications:
 
-| **Specification**  |   **Value**   |          **Notes**          |
-| :----------------: | :-----------: | :-------------------------: |
-|   Input Voltage    | 0 to +3.3 VDC | Maximum safe input voltage  |
-| Default Resolution |               |           Values            |
-| Maximum Resolution |               |           Values            |
-| Default Reference  |   +3.3 VDC    |        AREF voltage         |
-|    Sample Rate     |               |   Maximum sampling speed    |
-|      Accuracy      |               | Typical conversion accuracy |
+| **Specification**  |   **Value**   |          **Notes**           |
+| :----------------: | :-----------: | :--------------------------: |
+|   Input Voltage    | 0 to +3.3 VDC |  Maximum safe input voltage  |
+| Default Resolution |    10-bit     |        Values 0-1023         |
+| Maximum Resolution |    12-bit     |        Values 0-4095         |
+| Default Reference  |   +3.3 VDC    |         AREF voltage         |
+| Internal Reference |   +0.6 VDC    | Built-in precision reference |
 
 You can read analog values using the `analogRead()` function:
 
@@ -631,61 +451,9 @@ You can read analog values using the `analogRead()` function:
 value = analogRead(pin);
 ``` 
 
-The following example demonstrates how to read an Analog sensor connected to the pin A0 and turn on and off  LED:
+The default reference voltage of these pins is +3.3 VDC, but this can be changed using the `analogReference()` function. You can use `analogReference(AR_VDD)` for the default reference of +3.3 VDC, `analogReference(AR_INTERNAL)` for the built-in reference of +0.6 VDC, `analogReference(AR_INTERNAL1V2)` for the built-in reference of +0.6 VDC with 2x gain, and `analogReference(AR_INTERNAL2V4)` for the built-in reference of +0.6 VDC with 4x gain.
 
-```arduino
-/*
-  Analog Input
-
-  Demonstrates analog input by reading an analog sensor on analog pin 0 and
-  turning on and off a light emitting diode(LED) connected to digital pin 13.
-  The amount of time the LED will be on and off depends on the value obtained
-  by analogRead().
-
-  The circuit:
-  - potentiometer
-    center pin of the potentiometer to the analog input 0
-    one side pin (either one) to ground
-    the other side pin to +5V
-  - LED
-    anode (long leg) attached to digital output 13 through 220 ohm resistor
-    cathode (short leg) attached to ground
-
-  - Note: because most Arduinos have a built-in LED attached to pin 13 on the
-    board, the LED is optional.
-
-  created by David Cuartielles
-  modified 30 Aug 2011
-  By Tom Igoe
-
-  This example code is in the public domain.
-
-  https://docs.arduino.cc/built-in-examples/analog/AnalogInput/
-*/
-
-int sensorPin = A0;   // select the input pin for the potentiometer
-int ledPin = 13;      // select the pin for the LED
-int sensorValue = 0;  // variable to store the value coming from the sensor
-
-void setup() {
-  // declare the ledPin as an OUTPUT:
-  pinMode(ledPin, OUTPUT);
-}
-
-void loop() {
-  // read the value from the sensor:
-  sensorValue = analogRead(sensorPin);
-  // turn the ledPin on
-  digitalWrite(ledPin, HIGH);
-  // stop the program for <sensorValue> milliseconds:
-  delay(sensorValue);
-  // turn the ledPin off:
-  digitalWrite(ledPin, LOW);
-  // stop the program for <sensorValue> milliseconds:
-  delay(sensorValue);
-}
-
-```
+The default resolution is set to 10-bit, but it can be updated to 12-bit resolution using the `analogReadResolution()` function in the `setup()` of your sketch. Available options are analogReadResolution(10) for default 10-bit and analogReadResolution(12) for 12-bit for maximum 14-bit resolution.
 
 ***Important: Never connect more than 3.3V to analog pins***
 
@@ -695,17 +463,23 @@ The Nano 33 BLE Sense board features multiple pins with PWM capability that can 
 
 The Nano 33 BLE Sense board provides PWM functionality on the following pins:
 
-| **Arduino Pin** | **Microcontroller Pin**  | **Primary Function**  |
-| :-------------: | :---------------------:  | :-------------------: |
-|      `D3`       |         `P1.12`          |      Digital I/O      |
-|      `D5`       |         `P1.13`          |      Digital I/O      |
-|      `D6`       |         `P1.14`          |      Digital I/O      |
-|      `D9`       |         `P1.27`          |      Digital I/O      |
-|      `D10`      |         `P1.02`          |  Digital I/O, SPI CS  |
-|      `D11`      |         `P1.01`          | Digital I/O, SPI MOSI |
+| **Arduino Pin** | **Microcontroller Pin** | **PWM Channel** | **Primary Function**  |
+| :-------------: | :---------------------: | :-------------: | :-------------------: |
+|      `D2`       |         `P1.11`         |   Channel 0B    |      Digital I/O      |
+|      `D3`       |         `P1.12`         |   Channel 0B    |      Digital I/O      |
+|      `D4`       |         `P1.15`         |   Channel 0B    |      Digital I/O      |
+|      `D5`       |         `P1.13`         |   Channel 1B    |      Digital I/O      |
+|      `D6`       |         `P1.14`         |   Channel 0A    |      Digital I/O      |
+|      `D7`       |         `P0.23`         |   Channel 0B    |      Digital I/O      |
+|      `D8`       |         `P0.21`         |   Channel 0B    |      Digital I/O      |
+|      `D9`       |         `P0.27`         |   Channel 0B    |      Digital I/O      |
+|      `D10`      |         `P1.02`         |   Channel 2A    |  Digital I/O, SPI CS  |
+|      `D11`      |         `P1.01`         |   Channel 5A    | Digital I/O, SPI MOSI |
+|      `D12`      |         `P1.08`         |   Channel 0B    |      Digital I/O      |
+|      `D13`      |         `P0.13`         |   Channel 0B    |      Digital I/O      |
 
 
-***__Important note:__ The Nano 33 BLE Sense does not have a true Digital-to-Analog Converter (DAC). For analog output, PWM is the primary method. Pins `A4` and `A5` (I2C) and `D11`, `D12` (SPI) are not recommended for PWM as they are primarily used for communication buses.***
+***__Important note:__ Pins `A4`, `A5` and `D11`, `D12` are not recommended for PWM as they have I2C & SPI buses attached.The onboard LEDs (`LEDR`, `LEDG`, `LEDB`, `LED_BUILTIN`) also support PWM for brightness control.***
 
 
 You can use PWM pins as analog output pins with the `analogWrite()` function:
@@ -768,6 +542,35 @@ void loop() {
 
 You should now see the connected LED gradually fading in and out.
 
+### Digital-to-Analog Converter (DAC)
+
+The Nano 33 BLE Sense features a built-in 12-bit Digital-to-Analog Converter (DAC) connected to pin `A0`. Unlike PWM pins that simulate analog output through rapid switching, the DAC provides true analog voltage output. This makes it ideal for applications requiring precise analog signals, such as audio generation, sensor calibration, control systems and waveform generation.
+
+The Nano 33 BLE Sense DAC provides the following functionality:
+
+|  **Specification**   |     **Value**     |             **Notes**              |
+| :------------------: | :---------------: | :--------------------------------: |
+|      Resolution      |      12-bit       |    4096 discrete output levels     |
+|      Output Pin      |       `A0`        |      Dedicated DAC output pin      |
+| Output Voltage Range | +0.35 to +4.5 VDC | Typical range with +3.3 VDC supply |
+|  Default Resolution  |       8-bit       |              0 to 255              |
+|  Maximum Resolution  |      12-bit       |             0 to 4095              |
+|   Output Impedance   |   5Ω (typical)    |        Low impedance output        |
+|   Conversion Time    |     Max 30 μs     |   Time to update output voltage    |
+|    Resistive Load    |     Min 30 kΩ     |      Minimum recommended load      |
+|   Load Capacitance   |     Max 50 pF     |      Maximum capacitive load       |
+
+***__Important note:__ When using the DAC on pin `A0`, this pin cannot simultaneously be used as an analog input. The DAC provides true analog output, making it superior to PWM for applications requiring smooth, continuous voltage levels.***
+
+You can write analog values to the DAC using the `analogWrite()` function:
+
+```arduino
+analogWrite(DAC, value);
+```
+
+The default resolution is 8-bit (0 to 255), but this can be changed using the `analogWriteResolution()` function. You can use `analogWriteResolution(8)` for 8-bit resolution, `analogWriteResolution(10)` for 10-bit resolution or `analogWriteResolution(12)` for maximum 12-bit resolution.
+
+The DAC reference voltage depends on the selected reference mode, and the output voltage is calculated as: `Output Voltage = (DAC_Value / 4095) × Reference_Voltage`.
 
 ### 5V
 
@@ -788,15 +591,15 @@ UART is one of the most used device-to-device communication protocols, allowing 
 
 The Nano 33 BLE Sense's UART interface offers the following technical specifications:
 
-|   **Parameter**   |  **Value**  |      **Notes**       |
-| :---------------: | :---------: | :------------------: |
-|    Baud Rates     |             | Common: 9600, 115200 |
-|     Data Bits     |             | Standard data width  |
-|   Communication   | Full-duplex |  Simultaneous TX/RX  |
-|  Hardware Ports   |      2      | USB Serial + Serial1 |
-|     UART Pins     | `RX`, `TX`  | RX, TX respectively  |
-| Operating Voltage |  +3.3 VDC   |   TTL logic levels   |
-|   Flow Control    |  Software   |  XON/XOFF supported  |
+|   **Parameter**   |   **Value**    |      **Notes**       |
+| :---------------: | :------------: | :------------------: |
+|    Baud Rates     | 300 to 1000000 | Common: 9600, 115200 |
+|     Data Bits     |     8-bit      | Standard data width  |
+|   Communication   |  Full-duplex   |  Simultaneous TX/RX  |
+|  Hardware Ports   |       2        | USB Serial + Serial1 |
+|     UART Pins     |   `RX`, `TX`   | RX, TX respectively  |
+| Operating Voltage |    +3.3 VDC    |   TTL logic levels   |
+|   Flow Control    |    Software    |  XON/XOFF supported  |
 
 The Nano 33 BLE Sense board uses the following pins for UART communication:
 
@@ -818,47 +621,46 @@ The Nano 33 BLE Sense board provides two distinct UART communication channels, g
 
 The second channel is the Hardware Serial (`Serial1`), which is dedicated to external device communication. This channel provides robust connectivity for your project peripherals:
 
-- Connected to pins `RX` and `TX`
+- Connected to pins `TX` (D0) and `RX`(D1)
 - Used for external device communication
 - Configurable baud rate.
 - TTL voltage levels (0 VDC/+3.3 VDC)
 - Requires external device connection
 
-Here is a practical example of reading incoming data from an external UART device::
+Here is a practical example of how to use both UART channels simultaneously, such as when connecting a GPS module:
 
 ```arduino
-// Example: Reading data from external UART device
-void readUARTData() {
-  String incoming = "";
+// Example: Connecting a GPS module via Serial1
+void setup() {
+  Serial.begin(115200);   // USB debugging
+  Serial1.begin(9600);    // GPS module communication
   
-  while (Serial1.available()) {
-    delay(2);  // Small delay for stability
-    char c = Serial1.read();
-    incoming += c;
-  }
-  
-  if (incoming.length() > 0) {
-    Serial.print("Received: ");
-    Serial.println(incoming);
-  }
+  Serial.println("GPS module communication started");
 }
 
-// Example: Sending data to external UART device
-void sendUARTData() {
-  Serial1.write("Hello world!");
+void loop() {
+  // Forward GPS data to USB Serial for monitoring
+  if (Serial1.available()) {
+    String gpsData = Serial1.readString();
+    Serial.print("GPS: ");
+    Serial.print(gpsData);
+  }
+  
+  // Send commands to GPS module from USB Serial
+  if (Serial.available()) {
+    String command = Serial.readString();
+    Serial1.print(command);
+    Serial.println("Command sent to GPS");
+  }
 }
 ```
 
 When working with UART on the Nano 33 BLE Sense, there are several key points to keep in mind:
-- Voltage Levels: The UART operates at 3.3V TTL levels (0V for LOW, 3.3V for HIGH). Never connect 5V devices directly without a level shifter.
-
-- Baud Rate Matching: Ensure both devices use the same baud rate, data bits (typically 8), stop bits (typically 1), and parity (typically none).
-
-- Connection Pattern: Remember that TX connects to RX and RX connects to TX (crossover connection) when connecting two devices.
-
-- Asynchronous Protocol: UART is asynchronous, meaning there's no clock signal. The baud rate must be identical on both transmitting and receiving devices.
-
-- Dual Channel Advantage: Unlike some older Arduino boards, the Nano 33 BLE Sense has separate channels for USB and hardware UART, allowing simultaneous debugging and external communication.
+- The UART operates at 3.3V TTL levels (0V for LOW, 3.3V for HIGH). Never connect 5V devices directly without a level shifter.
+- Ensure both devices use the same baud rate, data bits (typically 8), stop bits (typically 1), and parity (typically none).
+- Remember that TX connects to RX and RX connects to TX (crossover connection) when connecting two devices.
+- UART is asynchronous, meaning there's no clock signal. The baud rate must be identical on both transmitting and receiving devices.
+- Unlike some older Arduino boards, the Nano 33 BLE Sense has separate channels for USB and hardware UART, allowing simultaneous debugging and external communication.
 
 ## SPI Communication
 
@@ -870,135 +672,26 @@ The Nano 33 BLE Sense's SPI interface offers the following technical specificati
 
 |   **Parameter**   |           **Value**            |          **Notes**          |
 | :---------------: | :----------------------------: | :-------------------------: |
-|    Clock Speed    |                                |    Maximum SPI frequency    |
-|   Data Transfer   |                                |     Standard data width     |
+|    Clock Speed    |          Up to 8 MHz           |    Maximum SPI frequency    |
+|   Data Transfer   |             8-bit              |     Standard data width     |
 |   Communication   |          Full-duplex           |  Simultaneous send/receive  |
-|     SPI Pins      | `D11`, `D12`, `D13` + any GPIO | `COPI`, `CIPO`, `SCK`, `CS` |
+|     SPI Pins      | `D11`, `D12`, `D13` + any GPIO | `MOSI`, `MISO`, `SCK`, `CS` |
 | Multiple Devices  |           Supported            |   Via different `CS` pins   |
 | Operating Voltage |            +3.3 VDC            |        Same as board        |
-| Protocol Support  |                                |   All SPI modes available   |
+| Protocol Support  |          Mode 0,1,2,3          |   All SPI modes available   |
 
 The Nano 33 BLE Sense board uses the following pins for SPI communication:
 
 | **Arduino Pin** | **Microcontroller Pin** | **SPI Function** |        **Description**        |
 | :-------------: | :---------------------: | :--------------: | :---------------------------: |
-|      `D11`      |         `P1.01`         |      `COPI`      | Controller Out, Peripheral In |
-|      `D12`      |         `P1.08`         |      `CIPO`      | Controller In, Peripheral Out |
+|      `D11`      |         `P1.01`         |      `MOSI`      | Controller Out, Peripheral In |
+|      `D12`      |         `P1.08`         |      `MISO`      | Controller In, Peripheral Out |
 |      `D13`      |         `P0.13`         |      `SCK`       |         Serial Clock          |
 |    Any GPIO     |            -            |       `CS`       | Chip Select (any digital pin) |
 
-***Note: The signal names have been updated from the traditional MOSI/MISO/SS to the modern COPI/CIPO/CS terminology for better clarity.***
-
 You can communicate via SPI using the dedicated `SPI.h` library, which is included in the Arduino Mbed OS Nano Boards core. The library provides simple functions to initialize the bus, send and receive data and manage multiple devices.
 
-The following example demonstrates how to use SPI communication:
-
-```arduino
-/**
-SPI Basic Example for the Arduino Nano 33 BLE Sense Board
-Name: nano_r4_spi_basic.ino
-Purpose: This sketch demonstrates how to use SPI communication
-to send and receive data.
-
-@author Arduino Product Experience Team
-@version 1.0 01/06/25
-*/
-
-#include <SPI.h>
-
-// Chip Select pin for SPI device
-const int CS_PIN = 10;
-
-void setup() {
-  // Initialize serial communication and wait up to 2.5 seconds for a connection
-  Serial.begin(115200);
-  for (auto startNow = millis() + 2500; !Serial && millis() < startNow; delay(500));
-  
-  Serial.println("- Arduino Nano 33 BLE Sense - SPI Basic Example started...");
-  
-  // Set CS pin as output and set it HIGH (inactive)
-  pinMode(CS_PIN, OUTPUT);
-  digitalWrite(CS_PIN, HIGH);
-  
-  // Initialize SPI communication
-  SPI.begin();
-  
-  // Configure SPI settings
-  // - Clock speed: 1 MHz (1000000 Hz)
-  // - Data order: Most Significant Bit first
-  // - Data mode: Mode 0 (Clock polarity = 0, Clock phase = 0)
-  SPI.beginTransaction(SPISettings(1000000, MSBFIRST, SPI_MODE0));
-  
-  Serial.println("- SPI initialized successfully");
-  Serial.println("- Ready to communicate with SPI devices");
-  
-  // Example: Send some test data
-  sendSPIData();
-}
-
-void loop() {
-  // Send a counter value every 2 seconds
-  static int counter = 0;
-  
-  // Select the device (CS LOW)
-  digitalWrite(CS_PIN, LOW);
-  
-  // Send counter value
-  byte response = SPI.transfer(counter);
-  
-  // Deselect the device (CS HIGH)
-  digitalWrite(CS_PIN, HIGH);
-  
-  // Display results
-  Serial.print("- Sent: ");
-  Serial.print(counter);
-  Serial.print(" | Received: ");
-  Serial.println(response);
-  
-  // Increment counter and wrap around at 255
-  counter++;
-  if (counter > 255) {
-    counter = 0;
-  }
-  
-  delay(2000);
-}
-
-void sendSPIData() {
-  Serial.println("- Sending test data...");
-  
-  // Select the device
-  digitalWrite(CS_PIN, LOW);
-  
-  // Send a sequence of test bytes
-  for (int i = 0; i < 5; i++) {
-    byte testData = 0x10 + i;  // Send 0x10, 0x11, 0x12, 0x13, 0x14
-    byte response = SPI.transfer(testData);
-    
-    Serial.print("  Sent: 0x");
-    if (testData < 16) Serial.print("0");
-    Serial.print(testData, HEX);
-    Serial.print(" | Received: 0x");
-    if (response < 16) Serial.print("0");
-    Serial.println(response, HEX);
-    
-    delay(100);
-  }
-  
-  // Deselect the device
-  digitalWrite(CS_PIN, HIGH);
-  
-  Serial.println("- Test data transmission complete");
-}
-```
-
-***To test this example, connect an SPI-compatible device. Without a connected device, the received data will typically be `0xFF` or random values.***
-
-You can open the Arduino IDE's Serial Monitor (Tools > Serial Monitor) to see the SPI communication in action.
-
-![Arduino IDE Serial Monitor output for the SPI example sketch](assets/spi-1.png)
-
-For connecting multiple SPI devices, you can use different digital pins as Chip Select (`CS`) lines while sharing the `COPI`, `CIPO`, and `SCK` pins:
+For connecting multiple SPI devices, you can use different digital pins as Chip Select (`CS`) lines while sharing the `MOSI`, `MISO`, and `SCK` pins:
 
 ```arduino
 // Multiple SPI device example
@@ -1030,17 +723,11 @@ void communicateWithDevice(int csPin, byte address, byte data) {
 
 When working with SPI on the Nano 33 BLE Sense, there are several key points to keep in mind:
 
-Voltage Levels: The SPI operates at 3.3V logic levels. Never connect 5V SPI devices directly without a level shifter.
-
-- **Chip Select Management:** Only one device should be selected (`CS LOW`) at a time. Always deselect devices after communication.
-
-- **Device Compatibility:** Different SPI devices may require specific clock speeds, modes, and protocols. Always consult your device's datasheet.
-
-- **Synchronous Protocol:** SPI is synchronous, meaning data is transferred in both directions simultaneously with each clock pulse.
-
-- **Flexible CS Pins:** Unlike some Arduino boards, you can use any digital pin as a Chip Select pin, providing flexibility for multiple devices.
-
-- **Modern Terminology:** Use COPI (Controller Out, Peripheral In) instead of MOSI, and CIPO (Controller In, Peripheral Out) instead of MISO.
+- The SPI operates at 3.3V logic levels. Never connect 5V SPI devices directly without a level shifter.
+- Only one device should be selected (`CS LOW`) at a time. Always deselect devices after communication.
+- Different SPI devices may require specific clock speeds, modes, and protocols. Always consult your device's datasheet.
+- SPI is synchronous, meaning data is transferred in both directions simultaneously with each clock pulse.
+- Unlike some Arduino boards, you can use any digital pin as a Chip Select pin, providing flexibility for multiple devices.
 
 ## I2C Communication
 
@@ -1050,14 +737,15 @@ I2C is particularly useful when your project needs to communicate with multiple 
 
 The Nano 33 BLE Sense's I2C interface offers the following technical specifications:
 
-|   **Parameter**   |  **Value**  |        **Notes**        |
-| :---------------: | :---------: | :---------------------: |
-|    Clock Speed    |             |                         |
-|   Data Transfer   |             |   Standard data width   |
-|   Communication   | Half-duplex | One direction at a time |
-|     I2C Pins      | `A4`, `A5`  |  SDA, SCL respectively  |
-| Device Addressing |             |                         |
-| Operating Voltage |  +3.3 VDC   |      Same as board      |
+|   **Parameter**   |   **Value**   |         **Notes**          |
+| :---------------: | :-----------: | :------------------------: |
+|    Clock Speed    | Up to 400 kHz |     Standard/Fast mode     |
+|   Data Transfer   |     8-bit     |    Standard data width     |
+|   Communication   |  Half-duplex  |  One direction at a time   |
+|     I2C Pins      |  `A4`, `A5`   |   SDA, SCL respectively    |
+| Device Addressing | 7-bit/10-bit  | Up to 127 unique addresses |
+| Operating Voltage |   +3.3 VDC    |       Same as board        |
+| Pull-up Resistors |    4.7 kΩ     |     Internal pull-ups      |
 
 The Nano 33 BLE Sense uses the following pins for I2C communication:
 
@@ -1066,87 +754,9 @@ The Nano 33 BLE Sense uses the following pins for I2C communication:
 |       `A4`      |          `P0.31`         |        SDA       |  Serial Data Line |
 |       `A5`      |          `P0.02`         |        SCL       | Serial Clock Line |
 
-You can communicate via I2C using the dedicated `Wire.h` library, which is included in the Arduino UNO R4 Boards core. The library provides simple functions to initialize the bus, send and receive data and manage multiple devices.
+You can communicate via I2C using the dedicated `Wire.h` library, which is included in the Arduino Nano Mbed OS Boards core. The library provides simple functions to initialize the bus, send and receive data and manage multiple devices.
 
-The following example demonstrates basic I2C communication patterns:
-
-```arduino
-/**
-I2C Basic Example for the Arduino Nano 33 BLE Sense Board
-Name: nano_r4_i2c_basic.ino
-Purpose: This sketch demonstrates basic I2C communication
-patterns for protocol analysis.
-
-@author Arduino Product Experience Team
-@version 1.0 01/06/25
-*/
-
-#include <Wire.h>
-
-// Example device address
-const int DEVICE_ADDRESS = 0x48;
-
-void setup() {
-  // Initialize serial communication and wait up to 2.5 seconds for a connection
-  Serial.begin(115200);
-  for (auto startNow = millis() + 2500; !Serial && millis() < startNow; delay(500));
-  
-  Serial.println("- Arduino Nano 33 BLE Sense - I2C Basic Example started...");
-  
-  // Initialize I2C communication as master
-  Wire.begin();
-  
-  Serial.println("- I2C initialized successfully");
-  Serial.println("- Connect protocol analyzer to A4 (SDA) and A5 (SCL)");
-  Serial.println("- Starting I2C communication patterns...");
-  
-  delay(2000);
-}
-
-void loop() {
-  // Write a single byte
-  Serial.println("- Writing single byte (0xAA) to device 0x48...");
-  Wire.beginTransmission(DEVICE_ADDRESS);
-  Wire.write(0xAA);
-  Wire.endTransmission();
-  
-  delay(1000);
-  
-  // Write multiple bytes
-  Serial.println("- Writing multiple bytes (0x10, 0x20, 0x30) to device 0x48...");
-  Wire.beginTransmission(DEVICE_ADDRESS);
-  Wire.write(0x10);
-  Wire.write(0x20);
-  Wire.write(0x30);
-  Wire.endTransmission();
-  
-  delay(1000);
-  
-  // Request data from device
-  Serial.println("- Requesting 2 bytes from device 0x48...");
-  Wire.requestFrom(DEVICE_ADDRESS, 2);
-  
-  // Read any available data
-  while (Wire.available()) {
-    int data = Wire.read();
-    Serial.print("Received: 0x");
-    if (data < 16) Serial.print("0");
-    Serial.println(data, HEX);
-  }
-  
-  delay(2000);
-  Serial.println("---");
-}
-```
-***To test this example, no external I2C devices are required. The code will generate I2C communication patterns that can be analyzed with a protocol analyzer. Without devices connected, read operations will typically return `0xFF`.***
-
-You can open the Arduino IDE's Serial Monitor (Tools > Serial Monitor) to see the I2C operations being performed. Connect a protocol analyzer to pins `A4` (SDA) and `A5` (SCL) to observe the actual I2C protocol signals.
-
-![Arduino IDE Serial Monitor output for the I2C example sketch](assets/i2c-1.png)
-
-***The I2C protocol requires pull-up resistors on both SDA and SCL lines. __The Nano 33 BLE Sense board does not have internal pull-ups on `A4` and `A5` to avoid interference with their analog input functionality, so external 4.7kΩ pull-up resistors to +5 VDC are required for proper I2C operation__.***
-
-One of the main advantages of I2C is the ability to connect multiple devices to the same bus. Here is how to connect multiple I2C devices:
+One of the main advantages of I²C is the ability to connect multiple devices to the same bus. Here is how to connect multiple I²C devices:
 
 ```arduino
 // Example: Communicating with multiple I2C devices
@@ -1183,166 +793,15 @@ void communicateWithMultipleDevices() {
 }
 ```
 
-When working with I2C on the Nano 33 BLE Sense board, there are several key points to keep in mind for successful implementation:
+**The I²C protocol requires pull-up resistors on both SDA and SCL lines. __The Nano 33 BLE Sense board does have internal pull-ups on `A4` and `A5` of 4.7kΩ +3.3 VDC required for proper I²C operation__.***
 
+When working with I2C on the Nano 33 BLE Sense board, there are several key points to keep in mind for successful implementation:
 - Each I2C device must have a unique address on the bus, so check device datasheets to avoid address conflicts.
 - Keep in mind that I2C is a half-duplex protocol, meaning data flows in only one direction at a time. The master device (your Nano 33 BLE Sense board) controls the clock line and initiates all communication.
 - When connecting multiple devices, simply connect all SDA pins together and all SCL pins together, along with power and ground connections.
-- The Nano 33 BLE Sense board can communicate with up to 127 different I2C devices on the same bus, making it perfect for complex sensor networks and expandable systems.
 
-## Bluetooth®
-
-To enable Bluetooth® on the Nano 33 BLE Sense, we can use the [ArduinoBLE](https://www.arduino.cc/en/Reference/ArduinoBLE) library, and include it at the top of our sketch:
-
-```arduino
-#include <ArduinoBLE.h>
-```
-
-Set the service and characteristic:
-
-```arduino
-BLEService ledService("180A"); // BLE LED Service
-BLEByteCharacteristic switchCharacteristic("2A57", BLERead | BLEWrite);
-```
-
-Set advertised name and service:
-
-```arduino
-  BLE.setLocalName("Nano 33 BLE Sense");
-  BLE.setAdvertisedService(ledService);
-```
-
-Start advertising:
-
-```arduino
-BLE.advertise();
-```
-
-Listen for Bluetooth® Low Energy peripherals to connect:
-
-```arduino  
-BLEDevice central = BLE.central();
-```
-
-Here is an example of turning on an RGB LED over Bluetooth®:
-```arduino
-#include <ArduinoBLE.h>
-
-BLEService ledService("180A"); // BLE LED Service
-
-// BLE LED Switch Characteristic - custom 128-bit UUID, read and writable by central
-BLEByteCharacteristic switchCharacteristic("2A57", BLERead | BLEWrite);
-
-void setup() {
-  Serial.begin(9600);
-  while (!Serial);
-
-  // set LED's pin to output mode
-  pinMode(LEDR, OUTPUT);
-  pinMode(LEDG, OUTPUT);
-  pinMode(LEDB, OUTPUT);
-  pinMode(LED_BUILTIN, OUTPUT);
-  
-  digitalWrite(LED_BUILTIN, LOW);         // when the central disconnects, turn off the LED
-  digitalWrite(LEDR, HIGH);               // will turn the LED off
-  digitalWrite(LEDG, HIGH);               // will turn the LED off
-  digitalWrite(LEDB, HIGH);                // will turn the LED off
-
-  // begin initialization
-  if (!BLE.begin()) {
-    Serial.println("starting Bluetooth® Low Energy failed!");
-
-    while (1);
-  }
-
-  // set advertised local name and service UUID:
-  BLE.setLocalName("Nano 33 BLE Sense");
-  BLE.setAdvertisedService(ledService);
-
-  // add the characteristic to the service
-  ledService.addCharacteristic(switchCharacteristic);
-
-  // add service
-  BLE.addService(ledService);
-
-  // set the initial value for the characteristic:
-  switchCharacteristic.writeValue(0);
-
-  // start advertising
-  BLE.advertise();
-
-  Serial.println("BLE LED Peripheral");
-}
-
-void loop() {
-  // listen for Bluetooth® Low Energy peripherals to connect:
-  BLEDevice central = BLE.central();
-
-  // if a central is connected to peripheral:
-  if (central) {
-    Serial.print("Connected to central: ");
-    // print the central's MAC address:
-    Serial.println(central.address());
-    digitalWrite(LED_BUILTIN, HIGH);            // turn on the LED to indicate the connection
-
-    // while the central is still connected to peripheral:
-    while (central.connected()) {
-      // if the remote device wrote to the characteristic,
-      // use the value to control the LED:
-      if (switchCharacteristic.written()) {
-        switch (switchCharacteristic.value()) {   // any value other than 0
-          case 01:
-            Serial.println("Red LED on");
-            digitalWrite(LEDR, LOW);            // will turn the LED on
-            digitalWrite(LEDG, HIGH);         // will turn the LED off
-            digitalWrite(LEDB, HIGH);         // will turn the LED off
-            break;
-          case 02:
-            Serial.println("Green LED on");
-            digitalWrite(LEDR, HIGH);         // will turn the LED off
-            digitalWrite(LEDG, LOW);        // will turn the LED on
-            digitalWrite(LEDB, HIGH);        // will turn the LED off
-            break;
-          case 03:
-            Serial.println("Blue LED on");
-            digitalWrite(LEDR, HIGH);         // will turn the LED off
-            digitalWrite(LEDG, HIGH);       // will turn the LED off
-            digitalWrite(LEDB, LOW);         // will turn the LED on
-            break;
-          default:
-            Serial.println(F("LEDs off"));
-            digitalWrite(LEDR, HIGH);          // will turn the LED off
-            digitalWrite(LEDG, HIGH);        // will turn the LED off
-            digitalWrite(LEDB, HIGH);         // will turn the LED off
-            break;
-        }
-      }
-    }
-
-    // when the central disconnects, print it out:
-    Serial.print(F("Disconnected from central: "));
-    Serial.println(central.address());
-    digitalWrite(LED_BUILTIN, LOW);         // when the central disconnects, turn off the LED
-    digitalWrite(LEDR, HIGH);          // will turn the LED off
-    digitalWrite(LEDG, HIGH);        // will turn the LED off
-    digitalWrite(LEDB, HIGH);         // will turn the LED off
-  }
-}
-```
-
-Once we are finished with the coding, we can upload the sketch to the board. When it has successfully uploaded, open the Serial Monitor. In the Serial Monitor, the text **"BLE LED Peripheral"** will appear as seen in the image below.
-
-![Serial Monitor output.](./assets/nano33BS_09_printing_values.png)
-
-We can now discover our Nano 33 BLE Sense board in the list of available Bluetooth® devices. To access the service and characteristic we recommend using the **LightBlue** application. Follow <a href="https://apps.apple.com/us/app/lightblue/id557428110">this link for iPhones</a> or <a href="https://play.google.com/store/apps/details?id=com.punchthrough.lightblueexplorer&hl=en">this link for Android phones</a>.
-
-Once we have the application open, follow the image below for instructions:
-
-![Accessing through a Bluetooth® phone app.](./assets/nano33BS_09_application.png)
-
-To control the RGB LED, we simply need to write 1,2 or 3 in the "WRITTEN VALUES" field to turn on the red, blue or the green LED and any other value to turn them off. This is within the **"Digital Output"** characteristic, which is located under **"Device Information"**.
-
-## IMU Sensor
+## Sensors
+### IMU Sensor
 
 IMU stands for: inertial measurement unit. It is an electronic device that measures and reports a body's specific force, angular rate and the orientation of the body, using a combination of accelerometers, gyroscopes, and oftentimes magnetometers.
 
@@ -1365,7 +824,7 @@ And to initialize the library, we can use the following command inside `void set
     while (1);
   }
 ```
-### Accelerometer
+#### Accelerometer
 An accelerometer is an electromechanical device used to measure acceleration forces. Such forces may be static, like the continuous force of gravity or, as is the case with many mobile devices, dynamic to sense movement or vibrations.
 
 The accelerometer data can be accessed through the following commands:
@@ -1468,8 +927,10 @@ Here is a screenshot of the sketch returning these values:
 
 ![Printing out the "tilt condition" of the board.](./assets/nano33BS_02_printing_values.png)
 
+- **Click here for the full tutorial: [Accessing Accelerometer Data on Nano 33 BLE Sense](https://docs.arduino.cc/tutorials/nano-33-ble-sense/imu-accelerometer/)**
 
-### Gyroscope
+
+#### Gyroscope
 
 A gyroscope sensor is a device that can measure and maintain the orientation and angular velocity of an object. Gyroscopes are more advanced than accelerometers, as they can measure the tilt and lateral orientation of an object, whereas an accelerometer can only measure its linear motion.
 
@@ -1567,7 +1028,9 @@ Here is a screenshot of the sketch returning these values:
 
 ![Serial Monitor output.](./assets/nano33BS_03_printing_values.png)
 
-### Magnetometer
+- **Click here for the full tutorial: [Accessing Gyroscope Data on Nano 33 BLE Sense](https://docs.arduino.cc/tutorials/nano-33-ble-sense/imu-gyroscope/)**
+
+#### Magnetometer
 
 A magnetometer is a device that measures magnetism, that is the direction, strength, or relative change of a magnetic field at a particular location.
 
@@ -1635,6 +1098,8 @@ Here is a screenshot illustrating the board's position:
 
 ![Checking for magnetic disturbance.](./assets/nano33BS_04_illustration.png)
 
+- **Click here for the full tutorial: [Accessing Magnetometer Data on Nano 33 BLE Sense](https://docs.arduino.cc/tutorials/nano-33-ble-sense/imu-magnetometer/)**
+
 ### Proximity and Gesture Sensor
 
 The APDS9960 chip allows for measuring digital proximity and ambient light as well as for detecting RGB colors and gestures.
@@ -1676,7 +1141,7 @@ if (APDS.proximityAvailable()) {
 }
 ```
 
-### Proximity Detection
+#### Proximity Detection
 
 Here is an example for printing out simple proximity detections and control the board's RGB LED accordingly. In addition to programming the board to change the colors of the RGB LED according to the proximity of an object to the board.
 
@@ -1792,7 +1257,9 @@ Here is a screenshot example of the sketch returning values through the Serial M
 
 ![Sensor data printed in the Serial Monitor.](assets/nano33BS_11_printing_values.png)
 
-### Gesture Recognition
+- **Click here for the full tutorial: [Proximity Detection with the Nano 33 BLE Sense](https://docs.arduino.cc/tutorials/nano-33-ble-sense/proximity-sensor/)**
+
+#### Gesture Recognition
 
 Here is an example for printing out simple hand gesture directions and control the board's RGB LED accordingly. In addition to programming the board to blink the built-in LED and change colors to the RGB LED according to the direction of the set gestures. The code will read simple Up-Down-Right-Left hand motions.
 
@@ -1885,7 +1352,9 @@ Here is a screenshot example of the sketch returning values.
 
 ![Gesture detections printed in the Serial Monitor.](assets/nano33BS_07_printing_values.png) 
 
-## Temperature and Humidity Sensor
+- **Click here for the full tutorial: [Gesture Recognition with the Nano 33 BLE Sense](https://docs.arduino.cc/tutorials/nano-33-ble-sense/gesture-sensor/)**
+
+### Temperature and Humidity Sensor
 
 The HTS221 is an ultra-compact sensor for relative humidity and temperature. We will use the I2C protocol to communicate with the sensor and get data from it. The sensor's range of different values are the following:
 
@@ -1917,7 +1386,7 @@ Serial.println(HTS.readTemperature());
 Serial.println(HTS.readHumidity());
 ```
 
-### Reading Temperature & Humidity
+#### Reading Temperature & Humidity
 
 Here is an example for measuring and printing out the humidity and temperature values of your surroundings. 
 
@@ -1993,7 +1462,9 @@ The following image shows how the data should be displayed.
 
 ![Temperature & humidity printed in the Serial Monitor.](assets/nano33BS_01_printing_values.png)
 
-## Barometric Pressure Sensor
+- **Click here for the full tutorial: [Reading Temperature & Humidity on Nano 33 BLE Sense](https://docs.arduino.cc/tutorials/nano-33-ble-sense/humidity-and-temperature-sensor/)**
+
+### Barometric Pressure Sensor
 
 The **LPS22HB** picks up on barometric pressure and allows for a 24-bit pressure data output between 260 to 1260 hPa. This data can also be processed to calculate the height above sea level of the current location.
 
@@ -2022,7 +1493,7 @@ Then we can read the values from the sensor using the code below.
 ```arduino
 BARO.readPressure();
 ```
-### Access Barometric Presure Sensor Data
+#### Access Barometric Presure Sensor Data
 
 Here is an example for calculating the approximate altitude above sea level through the measurement of the atmospheric pressure.
 
@@ -2078,7 +1549,9 @@ After verififying and uploading the sketch to the board, open the Serial Monitor
 
 ![Pressure data printed in the Serial Monitor.](assets/nano33BS_05_printing_values.png) 
 
-## Microphone
+- **Click here for the full tutorial: [Access Barometric Pressure Sensor Data on Nano 33 BLE Sense](https://docs.arduino.cc/tutorials/nano-33-ble-sense/barometric-sensor/)**
+
+### Microphone
 
 The **MP34DT05** is a compact, low-power omnidirectional digital MEMS microphone with an IC interface. The MP34DT05 sensor is a ultra-compact microphone that use PDM (Pulse-Density Modulation) to represent an analog signal with a binary signal. The sensor's range of different values are the following:
 
@@ -2095,102 +1568,51 @@ To access the data from the MP34DT05, we need to use the [PDM](https://www.ardui
 ```arduino
 static const int frequency = 20000; //frequency at 20 KHz instead of 16 KHz
 ```
-### Controlling the On-Board RGB LED with Microphone
 
-Here is an example for measuring and displaying the sound values of your surroundings.
+#### Tutorials
+
+- **[Controlling the On-Board RGB LED with Microphone](https://docs.arduino.cc/tutorials/nano-33-ble-sense/microphone-sensor/)**
+
+## Connectivity
+
+### Bluetooth®
+
+To enable Bluetooth® on the Nano 33 BLE Sense, we can use the [ArduinoBLE](https://www.arduino.cc/en/Reference/ArduinoBLE) library, and include it at the top of our sketch:
 
 ```arduino
-/*
-  This example reads audio data from the on-board PDM microphones, and prints
-  out the samples to the Serial console. The Serial Plotter built into the
-  Arduino IDE can be used to plot the audio data (Tools -> Serial Plotter)
-
-  Circuit:
-  - Arduino Nano 33 BLE Sense board
-
-  This example code is in the public domain.
-*/
-
-#include <PDM.h>
-
-// buffer to read samples into, each sample is 16-bits
-short sampleBuffer[256];
-
-// number of samples read
-volatile int samplesRead;
-
-void setup() {
-  Serial.begin(9600);
-  while (!Serial);
-
-  // configure the data receive callback
-  PDM.onReceive(onPDMdata);
-
-  // optionally set the gain, defaults to 20
-  // PDM.setGain(30);
-
-  // initialize PDM with:
-  // - one channel (mono mode)
-  // - a 16 kHz sample rate
-  if (!PDM.begin(1, 16000)) {
-    Serial.println("Failed to start PDM!");
-    while (1);
-  }
-}
-
-void loop() {
-  // wait for samples to be read
-  if (samplesRead) {
-
-    // print samples to the serial monitor or plotter
-    for (int i = 0; i < samplesRead; i++) {
-      Serial.println(sampleBuffer[i]);
-      // check if the sound value is higher than 500
-      if (sampleBuffer[i]>=500){
-        digitalWrite(LEDR,LOW);
-        digitalWrite(LEDG,HIGH);
-        digitalWrite(LEDB,HIGH);
-      }
-      // check if the sound value is higher than 250 and lower than 500
-      if (sampleBuffer[i]>=250 && sampleBuffer[i] < 500){
-        digitalWrite(LEDB,LOW);
-        digitalWrite(LEDR,HIGH);
-        digitalWrite(LEDG,HIGH);
-      }
-      //check if the sound value is higher than 0 and lower than 250
-      if (sampleBuffer[i]>=0 && sampleBuffer[i] < 250){
-        digitalWrite(LEDG,LOW);
-        digitalWrite(LEDR,HIGH);
-        digitalWrite(LEDB,HIGH);
-      }
-    }
-
-    // clear the read count
-    samplesRead = 0;
-  }
-}
-
-void onPDMdata() {
-  // query the number of bytes available
-  int bytesAvailable = PDM.available();
-
-  // read into the sample buffer
-  PDM.read(sampleBuffer, bytesAvailable);
-
-  // 16-bit, 2 bytes per sample
-  samplesRead = bytesAvailable / 2;
-}
+#include <ArduinoBLE.h>
 ```
 
-After you have successfully verified and uploaded the sketch to the board, open the Serial Monitor from the menu on the left. You will now see the new values printed.
+Set the service and characteristic:
 
-![Microphone data in the Serial Monitor.](assets/nano33BS_08_printing_values.png)
+```arduino
+BLEService ledService("180A"); // BLE LED Service
+BLEByteCharacteristic switchCharacteristic("2A57", BLERead | BLEWrite);
+```
 
-If you want to test it, the only thing you need to do is to place the board next to a speaker and play some music to see how the colors of the RGB LED change based on the music.
+Set advertised name and service:
 
-![RGB LED blinking according to the music.](assets/nano33BS_08_testing.png)
+```arduino
+  BLE.setLocalName("Nano 33 BLE Sense");
+  BLE.setAdvertisedService(ledService);
+```
 
-**Warning:** Remember that depending of the music, lights might blink too fast. **Immediately stop playing and consult a doctor if you experience any symptoms of “photosensitive epileptic seizures”.**
+Start advertising:
+
+```arduino
+BLE.advertise();
+```
+
+Listen for Bluetooth® Low Energy peripherals to connect:
+
+```arduino  
+BLEDevice central = BLE.central();
+```
+
+#### Tutorials
+
+- [Connecting Nano 33 BLE Devices over Bluetooth®](https://docs.arduino.cc/tutorials/nano-33-ble-sense/ble-device-to-device/)
+- [Controlling RGB LED Through Bluetooth®](https://docs.arduino.cc/tutorials/nano-33-ble-sense/bluetooth/)
 
 
 ## Support
